@@ -11,6 +11,7 @@ export function useChat() {
   const [budget, setBudget]               = useState(null);
   const [sessionData, setSessionData]     = useState(null);
   const [activeComponent, setActiveComponent] = useState(null);
+  const [extractedDefaults, setExtractedDefaults] = useState({});
 
   const sessionId    = useRef(generateId());
   const hasGreeted   = useRef(false);
@@ -39,7 +40,18 @@ export function useChat() {
       }
       setIsComplete(true);
     } else if (data.component) {
-      setActiveComponent(data.component);
+      // Inject extracted plan defaults into home_details fields
+      let comp = data.component;
+      if (comp.type === "home_details" && Object.keys(extractedDefaults).length) {
+        comp = {
+          ...comp,
+          fields: comp.fields.map(f => ({
+            ...f,
+            default: extractedDefaults[f.key] !== undefined ? extractedDefaults[f.key] : (f.default ?? "")
+          }))
+        };
+      }
+      setActiveComponent(comp);
     } else {
       setActiveComponent(null);
     }
@@ -90,6 +102,14 @@ export function useChat() {
       const uploadData = await uploadRes.json();
 
       const extracted = uploadData.extracted || {};
+      // Store for injection into home_details form
+      if (Object.keys(extracted).some(k => extracted[k] !== null)) {
+        setExtractedDefaults({
+          sqft: extracted.sqft || "",
+          stories: extracted.stories ? String(extracted.stories) : "",
+          garage_bays: extracted.garage_bays || 0,
+        });
+      }
       const parts = [];
       if (extracted.sqft)        parts.push(`${extracted.sqft.toLocaleString()} sf`);
       if (extracted.stories)     parts.push(`${extracted.stories} stor${extracted.stories === 1 ? "y" : "ies"}`);
@@ -147,7 +167,7 @@ export function useChat() {
 
   return {
     messages, isLoading, isComplete, budget, sessionData,
-    activeComponent, dismissComponent,
+    activeComponent, dismissComponent, extractedDefaults,
     sendMessage, uploadPlan, startConversation,
   };
 }
