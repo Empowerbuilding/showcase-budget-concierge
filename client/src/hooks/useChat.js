@@ -137,7 +137,7 @@ export function useChat() {
       setMessages([{ role: "assistant", text: data.message }]);
       if (data.component) setActiveComponent(data.component);
     } catch {
-      setMessages([{ role: "assistant", text: "Hi! I'm the Barnhaus Budget Concierge. Let's build your preliminary estimate." }]);
+      setMessages([{ role: "assistant", text: "Hi! I'm the Showcase Builders Budget Concierge. Let's build your preliminary estimate." }]);
     } finally {
       setIsLoading(false);
     }

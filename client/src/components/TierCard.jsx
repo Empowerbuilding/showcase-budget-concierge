@@ -14,11 +14,11 @@ export default function TierCard({ component, onSubmit }) {
 
   return (
     <div style={{
-      background: "#242424", border: "1px solid #B8860B", borderRadius: 12,
+      background: "#FAFAF8", border: "1px solid #C5A572", borderRadius: 12,
       padding: "16px 18px", marginBottom: 8,
     }}>
       {title && (
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#B8860B", marginBottom: 12, letterSpacing: "0.04em", fontFamily: "'Inter',sans-serif" }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: "#C5A572", marginBottom: 12, letterSpacing: "0.04em", fontFamily: "'Inter',sans-serif" }}>
           {title}
         </div>
       )}
@@ -31,30 +31,30 @@ export default function TierCard({ component, onSubmit }) {
               style={{
                 padding: "12px 16px", borderRadius: 10, cursor: "pointer", textAlign: "left",
                 fontFamily: "'Inter',sans-serif", transition: "all 0.15s",
-                border: `1px solid ${isSelected ? "#B8860B" : "#333"}`,
-                background: isSelected ? "#B8860B18" : "#1a1a1a",
+                border: `1px solid ${isSelected ? "#C5A572" : "#E5E0D8"}`,
+                background: isSelected ? "rgba(197,165,114,0.1)" : "#fff",
               }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
                 <span style={{
                   width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
-                  border: `2px solid ${isSelected ? "#B8860B" : "#444"}`,
-                  background: isSelected ? "#B8860B" : "transparent",
+                  border: `2px solid ${isSelected ? "#C5A572" : "#D1D5DB"}`,
+                  background: isSelected ? "#C5A572" : "transparent",
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
-                  {isSelected && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1a1a1a", display: "block" }} />}
+                  {isSelected && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff", display: "block" }} />}
                 </span>
-                <span style={{ fontSize: 14, fontWeight: 600, color: isSelected ? "#DAA520" : "#e0e0e0" }}>
+                <span style={{ fontSize: 14, fontWeight: 600, color: isSelected ? "#C5A572" : "#374151" }}>
                   {tier.label}
                 </span>
                 {tier.badge && (
                   <span style={{
-                    fontSize: 11, color: isSelected ? "#B8860B" : "#555", letterSpacing: "0.08em",
+                    fontSize: 11, color: isSelected ? "#C5A572" : "#9CA3AF", letterSpacing: "0.08em",
                     marginLeft: "auto", fontWeight: 700,
                   }}>{tier.badge}</span>
                 )}
               </div>
               {tier.description && (
-                <div style={{ fontSize: 12, color: isSelected ? "#aaa" : "#666", lineHeight: 1.5, paddingLeft: 28 }}>
+                <div style={{ fontSize: 12, color: isSelected ? "#6B7280" : "#9CA3AF", lineHeight: 1.5, paddingLeft: 28 }}>
                   {tier.description}
                 </div>
               )}
@@ -67,11 +67,14 @@ export default function TierCard({ component, onSubmit }) {
         <button onClick={handleSubmit} disabled={!selected}
           style={{
             padding: "9px 22px", borderRadius: 8, border: "none", cursor: selected ? "pointer" : "not-allowed",
-            background: selected ? "linear-gradient(135deg,#B8860B,#DAA520)" : "#333",
-            color: selected ? "#1a1a1a" : "#666",
+            background: selected ? "#C5A572" : "#E5E0D8",
+            color: selected ? "#fff" : "#9CA3AF",
             fontSize: 13, fontWeight: 600, fontFamily: "'Inter',sans-serif",
             transition: "all 0.15s",
-          }}>
+          }}
+          onMouseEnter={e => { if (selected) e.currentTarget.style.background = "#B39460"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = selected ? "#C5A572" : "#E5E0D8"; }}
+        >
           Continue →
         </button>
       </div>

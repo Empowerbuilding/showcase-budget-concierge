@@ -152,5 +152,5 @@ app.get("*", (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Barnhaus Budget Concierge running on port ${PORT}`);
+  console.log(`Showcase Builders Budget Concierge running on port ${PORT}`);
 });

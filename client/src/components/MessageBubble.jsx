@@ -6,9 +6,9 @@ const styles = {
   assistantRow:  { justifyContent: "flex-start" },
   avatar: {
     width: 32, height: 32, borderRadius: "50%",
-    background: "linear-gradient(135deg, #B8860B, #DAA520)",
+    background: "#C5A572",
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 14, fontWeight: 700, flexShrink: 0, marginTop: 4, color: "#1a1a1a",
+    fontSize: 14, fontWeight: 700, flexShrink: 0, marginTop: 4, color: "#fff",
   },
   bubble: {
     maxWidth: "75%", padding: "12px 18px", borderRadius: 18,
@@ -16,11 +16,11 @@ const styles = {
     fontFamily: "'Inter',sans-serif",
   },
   userBubble: {
-    background: "linear-gradient(135deg, #B8860B, #DAA520)",
-    color: "#1a1a1a", borderRadius: "18px 18px 4px 18px", fontWeight: 500,
+    background: "#C5A572",
+    color: "#fff", borderRadius: "18px 18px 4px 18px", fontWeight: 500,
   },
   assistantBubble: {
-    background: "#2a2a2a", color: "#f0f0f0", borderRadius: "18px 18px 18px 4px",
+    background: "#F5F3EF", color: "#374151", borderRadius: "18px 18px 18px 4px",
   },
 };
 
@@ -29,7 +29,7 @@ export default function MessageBubble({ message }) {
 
   return (
     <div style={{ ...styles.row, ...(isUser ? styles.userRow : styles.assistantRow) }}>
-      {!isUser && <div style={styles.avatar}>B</div>}
+      {!isUser && <div style={styles.avatar}>S</div>}
       <div style={{ ...styles.bubble, ...(isUser ? styles.userBubble : styles.assistantBubble) }}>
         {message.text}
       </div>

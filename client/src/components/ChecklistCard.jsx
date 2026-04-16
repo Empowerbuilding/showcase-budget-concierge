@@ -16,11 +16,11 @@ export default function ChecklistCard({ component, onSubmit }) {
 
   return (
     <div style={{
-      background: "#242424", border: "1px solid #B8860B", borderRadius: 12,
+      background: "#FAFAF8", border: "1px solid #C5A572", borderRadius: 12,
       padding: "16px 18px", marginBottom: 8,
     }}>
-      {title && <div style={{ fontSize: 13, fontWeight: 600, color: "#B8860B", marginBottom: subtitle ? 2 : 10, letterSpacing: "0.04em", fontFamily: "'Inter',sans-serif" }}>{title}</div>}
-      {subtitle && <div style={{ fontSize: 11, color: "#666", marginBottom: 12, fontFamily: "'Inter',sans-serif" }}>{subtitle}</div>}
+      {title && <div style={{ fontSize: 13, fontWeight: 600, color: "#C5A572", marginBottom: subtitle ? 2 : 10, letterSpacing: "0.04em", fontFamily: "'Inter',sans-serif" }}>{title}</div>}
+      {subtitle && <div style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 12, fontFamily: "'Inter',sans-serif" }}>{subtitle}</div>}
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
         {items.map(item => (
@@ -29,9 +29,9 @@ export default function ChecklistCard({ component, onSubmit }) {
               padding: "8px 14px", borderRadius: 8, cursor: "pointer",
               fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 500,
               transition: "all 0.15s",
-              border: `1px solid ${checked[item.key] ? "#B8860B" : "#3a3a3a"}`,
-              background: checked[item.key] ? "#B8860B22" : "#1a1a1a",
-              color: checked[item.key] ? "#DAA520" : "#888",
+              border: `1px solid ${checked[item.key] ? "#C5A572" : "#E5E0D8"}`,
+              background: checked[item.key] ? "rgba(197,165,114,0.13)" : "#fff",
+              color: checked[item.key] ? "#C5A572" : "#6B7280",
             }}>
             {checked[item.key] ? "✓ " : ""}{item.label}
           </button>
@@ -42,9 +42,13 @@ export default function ChecklistCard({ component, onSubmit }) {
         <button onClick={handleSubmit}
           style={{
             padding: "9px 22px", borderRadius: 8, border: "none", cursor: "pointer",
-            background: "linear-gradient(135deg,#B8860B,#DAA520)", color: "#1a1a1a",
+            background: "#C5A572", color: "#fff",
             fontSize: 13, fontWeight: 600, fontFamily: "'Inter',sans-serif",
-          }}>
+            transition: "background 0.2s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "#B39460")}
+          onMouseLeave={e => (e.currentTarget.style.background = "#C5A572")}
+        >
           Continue →
         </button>
       </div>

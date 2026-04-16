@@ -5,7 +5,7 @@ const styles = {
   app: {
     height: "100%",
     width: "100%",
-    background: "#1a1a1a",
+    background: "#FAFAF8",
     display: "flex",
     flexDirection: "column",
   },

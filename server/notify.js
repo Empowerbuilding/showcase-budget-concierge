@@ -145,7 +145,7 @@ export async function sendDiscordNotification(s, partial = false) {
 
     const res = await fetch(`https://discord.com/api/v10/channels/${process.env.DISCORD_CHANNEL}/messages`, {
       method: "POST",
-      headers: { "Authorization": `Bot ${process.env.DISCORD_TOKEN}`, "Content-Type": "application/json", "User-Agent": "DiscordBot (barnhaus, 1.0)" },
+      headers: { "Authorization": `Bot ${process.env.DISCORD_TOKEN}`, "Content-Type": "application/json", "User-Agent": "DiscordBot (showcase, 1.0)" },
       body: JSON.stringify({ content }),
     });
     const msg = await res.json();
@@ -158,7 +158,7 @@ export async function deleteDiscordMessage(messageId) {
   try {
     await fetch(`https://discord.com/api/v10/channels/${process.env.DISCORD_CHANNEL}/messages/${messageId}`, {
       method: "DELETE",
-      headers: { "Authorization": `Bot ${process.env.DISCORD_TOKEN}`, "User-Agent": "DiscordBot (barnhaus, 1.0)" },
+      headers: { "Authorization": `Bot ${process.env.DISCORD_TOKEN}`, "User-Agent": "DiscordBot (showcase, 1.0)" },
     });
   } catch (err) { console.error("Discord delete error:", err.message); }
 }

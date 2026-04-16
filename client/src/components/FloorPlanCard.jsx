@@ -2,10 +2,10 @@ import React from "react";
 
 const styles = {
   card: {
-    background: "#2a2a2a",
+    background: "#F5F3EF",
     borderRadius: 12,
     overflow: "hidden",
-    border: "1px solid #3a3a3a",
+    border: "1px solid #E5E0D8",
     maxWidth: 320,
     marginTop: 8,
     marginBottom: 4,
@@ -16,7 +16,7 @@ const styles = {
     height: 180,
     objectFit: "cover",
     display: "block",
-    background: "#1a1a1a",
+    background: "#E5E0D8",
   },
   body: {
     padding: "14px 16px",
@@ -25,27 +25,27 @@ const styles = {
     fontSize: 16,
     fontWeight: 600,
     marginBottom: 6,
-    color: "#fff",
-    fontFamily: "'Inter', sans-serif",
+    color: "#111827",
+    fontFamily: "'Playfair Display', serif",
   },
   specs: {
     fontSize: 13,
-    color: "#aaa",
+    color: "#6B7280",
     marginBottom: 12,
     fontFamily: "'Inter', sans-serif",
   },
   button: {
     display: "inline-block",
     padding: "8px 20px",
-    background: "linear-gradient(135deg, #B8860B, #DAA520)",
-    color: "#1a1a1a",
+    background: "#C5A572",
+    color: "#fff",
     borderRadius: 6,
     textDecoration: "none",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "0.02em",
     fontFamily: "'Inter', sans-serif",
-    transition: "opacity 0.2s",
+    transition: "background 0.2s",
   },
 };
 
@@ -56,8 +56,8 @@ export default function FloorPlanCard({ plan }) {
   return (
     <div
       style={styles.card}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#B8860B")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#3a3a3a")}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#C5A572")}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E5E0D8")}
     >
       {plan.image_url && (
         <img
@@ -79,8 +79,8 @@ export default function FloorPlanCard({ plan }) {
           target="_blank"
           rel="noopener noreferrer"
           style={styles.button}
-          onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
-          onMouseLeave={(e) => (e.target.style.opacity = "1")}
+          onMouseEnter={(e) => (e.target.style.background = "#B39460")}
+          onMouseLeave={(e) => (e.target.style.background = "#C5A572")}
         >
           View Plan
         </a>

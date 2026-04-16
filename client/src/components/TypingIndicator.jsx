@@ -12,16 +12,17 @@ const styles = {
     width: 32,
     height: 32,
     borderRadius: "50%",
-    background: "linear-gradient(135deg, #B8860B, #DAA520)",
+    background: "#C5A572",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: 14,
     fontWeight: 700,
     flexShrink: 0,
+    color: "#fff",
   },
   bubble: {
-    background: "#2a2a2a",
+    background: "#F5F3EF",
     borderRadius: "18px 18px 18px 4px",
     padding: "14px 20px",
     display: "flex",
@@ -32,7 +33,7 @@ const styles = {
     width: 8,
     height: 8,
     borderRadius: "50%",
-    background: "#888",
+    background: "#C5A572",
   },
 };
 
@@ -47,7 +48,7 @@ export default function TypingIndicator() {
     <>
       <style>{keyframes}</style>
       <div style={styles.wrapper}>
-        <div style={styles.avatar}>B</div>
+        <div style={styles.avatar}>S</div>
         <div style={styles.bubble}>
           {[0, 1, 2].map((i) => (
             <div
