@@ -148,5 +148,10 @@ export async function chat(history) {
     return retryText;
   }
 
-  return data.candidates[0].content.parts[0].text;
+  const text = data.candidates[0]?.content?.parts?.[0]?.text;
+  if (!text) {
+    console.error("Gemini candidate has no text:", JSON.stringify(data.candidates[0]).slice(0, 300));
+    throw new Error("Gemini returned empty response");
+  }
+  return text;
 }
