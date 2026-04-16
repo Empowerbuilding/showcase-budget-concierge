@@ -1,9 +1,11 @@
-import Anthropic from "@anthropic-ai/sdk";
+import sharp from "sharp";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const GEMINI_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_VISION_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
 
 /**
- * Parse a floor plan PDF or image with Claude vision.
+ * Parse a floor plan image with Gemini 2.5 Pro vision.
+ * Resizes large images first to stay within inline data limits.
  * Returns { sqft, stories, garage_bays } — any field may be null if not found.
  */
 export async function parsePlan(buffer, mimeType) {
@@ -14,27 +16,51 @@ export async function parsePlan(buffer, mimeType) {
     throw new Error("Only images and PDFs are supported");
   }
 
-  const contentBlock = isImage
-    ? { type: "image",    source: { type: "base64", media_type: mimeType,          data: buffer.toString("base64") } }
-    : { type: "document", source: { type: "base64", media_type: "application/pdf", data: buffer.toString("base64") } };
+  let finalBuffer = buffer;
+  let finalMime   = mimeType;
+
+  // Resize images to max 1200px and convert to JPEG to keep payload small
+  if (isImage) {
+    finalBuffer = await sharp(buffer)
+      .resize({ width: 1200, height: 1200, fit: "inside", withoutEnlargement: true })
+      .jpeg({ quality: 85 })
+      .toBuffer();
+    finalMime = "image/jpeg";
+  }
+
+  const inlinePart = {
+    inlineData: {
+      mimeType: finalMime,
+      data: finalBuffer.toString("base64")
+    }
+  };
 
   try {
-    const response = await client.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 256,
-      messages: [{
-        role: "user",
-        content: [
-          contentBlock,
-          {
-            type: "text",
-            text: 'This is a floor plan or building plan. Extract: (1) total conditioned square footage, (2) number of stories, (3) number of garage bays. Output ONLY valid JSON — no prose: {"sqft":<number|null>,"stories":<number|null>,"garage_bays":<number|null>}',
-          },
-        ],
-      }],
+    const res = await fetch(`${GEMINI_VISION_URL}?key=${GEMINI_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          role: 'user',
+          parts: [
+            inlinePart,
+            {
+              text: 'This is a floor plan or building plan. Extract: (1) total conditioned square footage, (2) number of stories, (3) number of garage bays. Output ONLY valid JSON — no prose: {"sqft":<number|null>,"stories":<number|null>,"garage_bays":<number|null>}'
+            }
+          ]
+        }],
+        generationConfig: { maxOutputTokens: 256 }
+      })
     });
 
-    const text  = response.content[0]?.text || "";
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Gemini error ${res.status}: ${err}`);
+    }
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    console.log("Gemini vision raw:", text);
     const match = text.match(/\{[\s\S]*?\}/);
     if (match) {
       return JSON.parse(match[0]);
@@ -42,5 +68,6 @@ export async function parsePlan(buffer, mimeType) {
   } catch (err) {
     console.error("Plan parse error:", err.message);
   }
+
   return { sqft: null, stories: null, garage_bays: null };
 }
