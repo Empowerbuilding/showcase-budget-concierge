@@ -111,7 +111,7 @@ ${FENCE}
 
 export async function chat(history) {
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20251022",
+    model: "claude-3-5-sonnet-20241022",
     max_tokens: 1500,
     system: SYSTEM_PROMPT,
     messages: history,
