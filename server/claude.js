@@ -128,5 +128,25 @@ export async function chat(history) {
   }
 
   const data = await res.json();
+
+  // Gemini 2.5-pro (thinking model) sometimes returns no candidates on first turn
+  // Retry once with gemini-2.5-flash as fallback
+  if (!data.candidates?.length) {
+    console.warn("No candidates from Gemini, retrying with flash...", JSON.stringify(data).slice(0, 200));
+    const retry = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        contents,
+        generationConfig: { maxOutputTokens: 1500 }
+      })
+    });
+    const retryData = await retry.json();
+    const retryText = retryData.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!retryText) throw new Error("Gemini returned no candidates: " + JSON.stringify(retryData).slice(0, 300));
+    return retryText;
+  }
+
   return data.candidates[0].content.parts[0].text;
 }
