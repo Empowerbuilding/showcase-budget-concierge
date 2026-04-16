@@ -1,10 +1,11 @@
-import Anthropic from "@anthropic-ai/sdk";
+// claude.js — powered by Gemini 2.5 Pro
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const GEMINI_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
 
 const FENCE = "```";
 
-const SYSTEM_PROMPT = `You are the Budget Concierge for Barnhaus Custom Homes. You guide prospective clients through a 6-step conversation to produce a preliminary construction budget estimate.
+const SYSTEM_PROMPT = `You are the Budget Concierge for Showcase Builders. You guide prospective clients through a 6-step conversation to produce a preliminary construction budget estimate.
 
 ## Personality
 - Warm, professional, efficient
@@ -44,11 +45,6 @@ Acknowledge their name and move right to home basics. If a plan was uploaded wit
 Output this component (use pre-filled defaults if provided in context):
 ${FENCE}json
 {"component":{"type":"home_details","fields":[{"key":"sqft","label":"Square Footage","type":"number","placeholder":"e.g. 2400"},{"key":"stories","label":"Stories","type":"select","options":[{"value":"1","label":"Single story"},{"value":"1.5","label":"1.5 story"},{"value":"2","label":"Two story"}]},{"key":"garage_bays","label":"Garage Bays","type":"select","options":[{"value":"0","label":"No garage"},{"value":"1","label":"1 bay"},{"value":"2","label":"2 bays"},{"value":"3","label":"3 bays"},{"value":"4","label":"4+ bays"}]},{"key":"bonus_room","label":"Bonus Room?","type":"boolean"}]}}
-${FENCE}
-
-If a plan was uploaded and values were extracted, include "defaults" in the component fields. For example if sqft=2400 was extracted:
-${FENCE}json
-{"component":{"type":"home_details","fields":[{"key":"sqft","label":"Square Footage","type":"number","placeholder":"e.g. 2400","default":2400}, ...]}}
 ${FENCE}
 
 ### STEP 3 — Site Conditions
@@ -110,12 +106,27 @@ ${FENCE}
 - When outputting session_data, use the values from the actual conversation — do not use placeholder values`;
 
 export async function chat(history) {
-  const response = await client.messages.create({
-    model: "claude-3-5-sonnet-20241022",
-    max_tokens: 1500,
-    system: SYSTEM_PROMPT,
-    messages: history,
+  // Convert OpenAI-style history to Gemini format
+  const contents = history.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+
+  const res = await fetch(`${GEMINI_URL}?key=${GEMINI_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents,
+      generationConfig: { maxOutputTokens: 1500 }
+    })
   });
 
-  return response.content.filter(b => b.type === "text").map(b => b.text).join("");
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Gemini error ${res.status}: ${err}`);
+  }
+
+  const data = await res.json();
+  return data.candidates[0].content.parts[0].text;
 }
