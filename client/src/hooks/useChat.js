@@ -102,8 +102,10 @@ export function useChat() {
       const uploadData = await uploadRes.json();
 
       const extracted = uploadData.extracted || {};
+      const summary = uploadData.extracted?.summary || null;
+
       // Store for injection into home_details form
-      if (Object.keys(extracted).some(k => extracted[k] !== null)) {
+      if (Object.keys(extracted).some(k => extracted[k] !== null && k !== "summary")) {
         setExtractedDefaults({
           sqft: extracted.sqft || "",
           stories: extracted.stories ? String(extracted.stories) : "",
@@ -115,9 +117,12 @@ export function useChat() {
       if (extracted.stories)     parts.push(`${extracted.stories} stor${extracted.stories === 1 ? "y" : "ies"}`);
       if (extracted.garage_bays) parts.push(`${extracted.garage_bays}-car garage`);
 
-      const context = parts.length
-        ? `I've uploaded my floor plan (${file.name}). Extracted: ${parts.join(", ")}.`
-        : `I've uploaded my floor plan (${file.name}). Please extract what you can.`;
+      // Use summary if available, otherwise fall back to extracted parts
+      const context = summary
+        ? `I've uploaded my floor plan (${file.name}). Here's what I can see: ${summary}${parts.length ? " Extracted: " + parts.join(", ") + "." : ""}`
+        : parts.length
+          ? `I've uploaded my floor plan (${file.name}). Extracted: ${parts.join(", ")}.`
+          : `I've uploaded my floor plan (${file.name}). Please help me fill in the details.`;
 
       const res  = await fetch("/api/chat", {
         method: "POST",

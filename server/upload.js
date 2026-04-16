@@ -44,10 +44,10 @@ export async function parsePlan(buffer, mimeType) {
         contents: [{
           parts: [
             { inlineData: { mimeType: finalMime, data: b64 } },
-            { text: 'This is a floor plan or building plan. Extract: (1) total conditioned square footage, (2) number of stories, (3) number of garage bays. Output ONLY valid JSON — no prose: {"sqft":<number|null>,"stories":<number|null>,"garage_bays":<number|null>}' }
+            { text: 'This is a floor plan or building plan. First give a 1-2 sentence plain English summary of what you see (room count, layout style, approximate size if visible). Then on a new line output ONLY this JSON: {"sqft":<number|null>,"stories":<number|null>,"garage_bays":<number|null>}. Example:\nThis appears to be a 2,640 SF single-story home with 3 bedrooms, 2 baths, and an open kitchen/living area.\n{"sqft":2640,"stories":1,"garage_bays":2}' }
           ]
         }],
-        generationConfig: { maxOutputTokens: 256 }
+        generationConfig: { maxOutputTokens: 1024 }
       })
     });
 
@@ -56,8 +56,11 @@ export async function parsePlan(buffer, mimeType) {
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     console.log("Gemini vision response:", text);
-    const match = text.match(/\{[\s\S]*?\}/);
-    if (match) return JSON.parse(match[0]);
+    const jsonMatch = text.match(/\{[\s\S]*?\}/);
+    // Extract summary (everything before the JSON)
+    const summaryMatch = text.split(/\{/)[0].trim();
+    const extracted = jsonMatch ? JSON.parse(jsonMatch[0]) : { sqft: null, stories: null, garage_bays: null };
+    return { ...extracted, summary: summaryMatch || null };
 
   } catch (err) {
     console.error("Plan parse error:", err.message);
