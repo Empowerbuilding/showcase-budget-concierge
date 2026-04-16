@@ -1,5 +1,5 @@
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_VISION_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_VISION_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
 
 /**
  * Parse a floor plan PDF or image with Gemini vision.
