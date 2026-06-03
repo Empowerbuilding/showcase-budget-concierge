@@ -18,9 +18,9 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
   const perSfHigh = sqft > 0 ? Math.round(high / sqft) : null;
 
   const rows = lineItems.map((li, i) => `
-    <tr style="background:${i % 2 === 0 ? "#fff" : "#F9F7F4"}">
-      <td style="padding:9px 16px;color:#374151;font-size:13px;border-bottom:1px solid #EDE9E2;">${li.name}</td>
-      <td style="padding:9px 16px;color:#374151;font-size:13px;border-bottom:1px solid #EDE9E2;text-align:right;font-variant-numeric:tabular-nums;">${formatCurrency(li.amount)}</td>
+    <tr style="background:${i % 2 === 0 ? "#ffffff" : "#F9F7F4"}">
+      <td style="padding:10px 20px 10px 24px;color:#374151;font-size:13px;border-bottom:1px solid #EDE9E2;line-height:1.4;">${li.name}</td>
+      <td style="padding:10px 24px 10px 8px;color:#111827;font-size:13px;border-bottom:1px solid #EDE9E2;text-align:right;white-space:nowrap;font-weight:500;">${formatCurrency(li.amount)}</td>
     </tr>`).join("");
 
   const detailRow = (label, value) => value ? `
@@ -56,20 +56,22 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
       </p>
 
       <!-- Budget Range — hero number -->
-      <div style="background:linear-gradient(135deg,#1a1a1a,#2d2417);border-radius:10px;padding:24px 28px;margin-bottom:24px;text-align:center;">
-        <div style="color:#C5A572;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;font-weight:600;">Estimated Budget Range</div>
-        <div style="display:flex;justify-content:center;align-items:center;gap:20px;">
-          <div>
-            <div style="color:rgba(255,255,255,0.5);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Low</div>
-            <div style="color:#fff;font-size:26px;font-weight:700;font-family:Georgia,serif;">${formatCurrency(low)}</div>
-          </div>
-          <div style="color:#C5A572;font-size:22px;font-weight:200;">—</div>
-          <div>
-            <div style="color:rgba(255,255,255,0.5);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">High</div>
-            <div style="color:#C5A572;font-size:26px;font-weight:700;font-family:Georgia,serif;">${formatCurrency(high)}</div>
-          </div>
-        </div>
-        ${perSfLow ? `<div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:10px;">≈ ${formatCurrency(perSfLow)} – ${formatCurrency(perSfHigh)}/sf all-in</div>` : ""}
+      <div style="background:linear-gradient(135deg,#1a1a1a,#2d2417);border-radius:10px;padding:28px 24px;margin-bottom:24px;text-align:center;">
+        <div style="color:#C5A572;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:16px;font-weight:600;">Estimated Budget Range</div>
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;">
+          <tr>
+            <td style="text-align:center;padding:0 12px;">
+              <div style="color:rgba(255,255,255,0.45);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">Low</div>
+              <div style="color:#ffffff;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(low)}</div>
+            </td>
+            <td style="text-align:center;padding:0 8px;color:#C5A572;font-size:24px;font-weight:200;vertical-align:middle;">&ndash;</td>
+            <td style="text-align:center;padding:0 12px;">
+              <div style="color:rgba(255,255,255,0.45);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">High</div>
+              <div style="color:#C5A572;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(high)}</div>
+            </td>
+          </tr>
+        </table>
+        ${perSfLow ? `<div style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:14px;letter-spacing:0.05em;">&#126; ${formatCurrency(perSfLow)}&nbsp;&ndash;&nbsp;${formatCurrency(perSfHigh)}&nbsp;/&nbsp;sf all-in</div>` : ""}
       </div>
 
       <!-- Build Summary -->
@@ -97,26 +99,26 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
       <div style="padding:20px 32px 12px;">
         <div style="font-size:10px;color:#C5A572;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;">Cost Breakdown</div>
       </div>
-      <table style="width:100%;border-collapse:collapse;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <thead>
           <tr style="background:#F0EDE8;">
-            <th style="padding:8px 16px;font-size:10px;color:#9CA3AF;letter-spacing:0.1em;text-transform:uppercase;text-align:left;font-weight:600;">Category</th>
-            <th style="padding:8px 16px;font-size:10px;color:#9CA3AF;letter-spacing:0.1em;text-transform:uppercase;text-align:right;font-weight:600;">Estimate</th>
+            <th style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:left;font-weight:600;">Category</th>
+            <th style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:right;font-weight:600;">Estimate</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
         <tfoot>
-          <tr>
-            <td style="padding:10px 16px;color:#6B7280;font-size:13px;border-top:1px solid #EDE9E2;">Subtotal</td>
-            <td style="padding:10px 16px;color:#6B7280;font-size:13px;border-top:1px solid #EDE9E2;text-align:right;">${formatCurrency(subtotal)}</td>
+          <tr style="background:#F5F3F0;">
+            <td style="padding:11px 24px;color:#6B7280;font-size:13px;border-top:1px solid #DDD8D0;">Subtotal</td>
+            <td style="padding:11px 24px;color:#6B7280;font-size:13px;border-top:1px solid #DDD8D0;text-align:right;white-space:nowrap;">${formatCurrency(subtotal)}</td>
           </tr>
-          <tr>
-            <td style="padding:6px 16px;color:#9CA3AF;font-size:12px;">10% Contingency</td>
-            <td style="padding:6px 16px;color:#9CA3AF;font-size:12px;text-align:right;">${formatCurrency(contingency)}</td>
+          <tr style="background:#F5F3F0;">
+            <td style="padding:7px 24px;color:#9CA3AF;font-size:12px;">10% Contingency</td>
+            <td style="padding:7px 24px;color:#9CA3AF;font-size:12px;text-align:right;white-space:nowrap;">${formatCurrency(contingency)}</td>
           </tr>
-          <tr style="background:#F0EDE8;">
-            <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#C5A572;border-top:2px solid #C5A572;">Estimated Range</td>
-            <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#C5A572;border-top:2px solid #C5A572;text-align:right;">${formatCurrency(low)} – ${formatCurrency(high)}</td>
+          <tr style="background:#1a1a1a;">
+            <td style="padding:14px 24px;font-size:13px;font-weight:700;color:#C5A572;border-top:2px solid #C5A572;">Estimated Range</td>
+            <td style="padding:14px 24px;font-size:13px;font-weight:700;color:#C5A572;border-top:2px solid #C5A572;text-align:right;white-space:nowrap;">${formatCurrency(low)}&nbsp;&ndash;&nbsp;${formatCurrency(high)}</td>
           </tr>
         </tfoot>
       </table>

@@ -111,6 +111,24 @@ export function calculateBudget(data) {
     });
   }
 
+  // ── Site terrain ─────────────────────────────────────────────────────────
+  const terrain = data.site_terrain || {};
+  if (terrain.steep_site) {
+    lineItems.push({ id: 111, name: "Steep Site — Grading & Retaining", amount: 55000, notes: "Significant grade change — excavation, retaining walls, engineered foundation" });
+  } else if (terrain.sloped_site) {
+    lineItems.push({ id: 111, name: "Sloped Site — Grading & Retaining", amount: 25000, notes: "Hillside lot — additional excavation & retaining" });
+  }
+
+  // ── Stories surcharge (stairs, structural complexity) ────────────────────
+  const stories = String(data.stories || "1");
+  if (stories === "1.5") {
+    lineItems.push({ id: 301, name: "1.5-Story Structural Premium",  amount: 15000, notes: "Staircase & partial upper structural" });
+  } else if (stories === "2") {
+    lineItems.push({ id: 302, name: "Two-Story Structural Premium",  amount: 22000, notes: "Full staircase, upper-floor structural & MEP extensions" });
+  } else if (stories === "3") {
+    lineItems.push({ id: 303, name: "Three-Story Structural Premium", amount: 45000, notes: "Two staircases, structural & MEP extensions" });
+  }
+
   // ── Special features ─────────────────────────────────────────────────────
   if (features.fireplace) {
     lineItems.push({ id: 1205, name: "Fireplace (indoor)",           amount: [10000, 14000, 22000][ii], notes: "Includes surround & hearth" });
@@ -118,8 +136,26 @@ export function calculateBudget(data) {
   if (features.outdoor_kitchen) {
     lineItems.push({ id: 1710, name: "Outdoor Kitchen",              amount: [22000, 35000, 55000][ei], notes: "Grill, counter & utility connections" });
   }
+  if (features.pool_spa) {
+    lineItems.push({ id: 1730, name: "Pool / Spa",                   amount: [65000, 100000, 180000][ei], notes: "Gunite pool; elevated includes spa; premium includes infinity edge & water features" });
+  }
+  if (features.dock) {
+    lineItems.push({ id: 1740, name: "Boat Dock",                    amount: [35000, 65000, 120000][ei], notes: "Lake LBJ dock — permitted, covered" });
+  }
+  if (features.covered_outdoor_living) {
+    lineItems.push({ id: 1750, name: "Covered Outdoor Living",       amount: [22000, 38000, 65000][ei], notes: "Covered patio/deck with ceiling fans & lighting" });
+  }
   if (features.home_automation) {
     lineItems.push({ id: 810,  name: "Home Automation / Smart Home", amount: [12000, 22000, 40000][ii], notes: "Lighting, security & AV integration" });
+  }
+  if (features.media_room) {
+    lineItems.push({ id: 1610, name: "Media Room / Home Theater",    amount: [18000, 35000, 65000][ii], notes: "AV wiring, acoustic treatment, projector or TV, seating" });
+  }
+  if (features.wine_cellar) {
+    lineItems.push({ id: 1620, name: "Wine Cellar / Wet Bar",        amount: [12000, 25000, 50000][ii], notes: "Climate-controlled cellar or custom wet bar" });
+  }
+  if (features.generator) {
+    lineItems.push({ id: 830,  name: "Whole-Home Generator",         amount: [12000, 18000, 28000][ii], notes: "Propane or natural gas standby generator" });
   }
   if (features.solar) {
     lineItems.push({ id: 820,  name: "Solar System",                 amount: [28000, 35000, 45000][ei], notes: "Grid-tie system with battery option" });
