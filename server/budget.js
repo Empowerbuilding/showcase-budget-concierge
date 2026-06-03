@@ -113,11 +113,16 @@ export function calculateBudget(data) {
   const contingency = Math.round(subtotal * 0.10);
   const total       = subtotal + contingency;
 
+  const low  = Math.round(total * 0.90);
+  const high = Math.round(total * 1.15);
+
   return {
     lineItems,
     subtotal,
     contingency,
     total,
+    low,
+    high,
     meta: {
       sqft,
       exterior_tier: data.exterior_tier || "standard",

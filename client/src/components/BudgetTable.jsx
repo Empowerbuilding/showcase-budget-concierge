@@ -10,9 +10,10 @@ export default function BudgetTable({ budget, sessionData }) {
   const [expanded, setExpanded] = useState(true);
   if (!budget) return null;
 
-  const { lineItems = [], subtotal = 0, contingency = 0, total = 0, meta = {} } = budget;
-  const sqft   = meta.sqft || sessionData?.sqft || 0;
-  const perSf  = sqft > 0 ? Math.round(total / sqft) : null;
+  const { lineItems = [], subtotal = 0, contingency = 0, total = 0, low = 0, high = 0, meta = {} } = budget;
+  const sqft      = meta.sqft || sessionData?.sqft || 0;
+  const perSfLow  = sqft > 0 ? Math.round(low  / sqft) : null;
+  const perSfHigh = sqft > 0 ? Math.round(high / sqft) : null;
 
   return (
     <div style={{
@@ -43,18 +44,21 @@ export default function BudgetTable({ budget, sessionData }) {
 
       {/* Total always visible */}
       <div style={{ padding: "16px 20px", borderBottom: expanded ? "1px solid #E5E0D8" : "none" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div>
-            <div style={{ fontSize: 11, color: "#6B7280", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>
-              Total Estimate
+        <div>
+          <div style={{ fontSize: 11, color: "#6B7280", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>Estimated Range</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
+            <div>
+              <div style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 2 }}>Low</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#374151", fontFamily: "'Playfair Display',serif" }}>{fmt(low)}</div>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 700, color: "#C5A572", fontFamily: "'Playfair Display',serif" }}>{fmt(total)}</div>
-            {perSf && <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>≈ {fmt(perSf)}/sf all-in</div>}
+            <div style={{ fontSize: 18, color: "#C5A572", fontWeight: 300 }}>—</div>
+            <div>
+              <div style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 2 }}>High</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#C5A572", fontFamily: "'Playfair Display',serif" }}>{fmt(high)}</div>
+            </div>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 12, color: "#9CA3AF" }}>Subtotal: {fmt(subtotal)}</div>
-            <div style={{ fontSize: 12, color: "#9CA3AF" }}>10% Contingency: {fmt(contingency)}</div>
-          </div>
+          {perSfLow && <div style={{ fontSize: 11, color: "#9CA3AF" }}>≈ {fmt(perSfLow)} – {fmt(perSfHigh)}/sf all-in</div>}
+          <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Base: {fmt(total)} · Subtotal: {fmt(subtotal)} · 10% Contingency: {fmt(contingency)}</div>
         </div>
       </div>
 
@@ -91,9 +95,9 @@ export default function BudgetTable({ budget, sessionData }) {
               <div style={{ fontSize: 12, color: "#9CA3AF" }}>10% Contingency</div>
               <div style={{ fontSize: 12, color: "#9CA3AF", textAlign: "right" }}>{fmt(contingency)}</div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 8, padding: "8px 0 4px", borderTop: "1px solid #C5A572", marginTop: 4 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#C5A572" }}>TOTAL</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#C5A572", textAlign: "right" }}>{fmt(total)}</div>
+            <div style={{ padding: "8px 0 4px", borderTop: "1px solid #C5A572", marginTop: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#C5A572" }}>ESTIMATED RANGE</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#C5A572", textAlign: "right" }}>{fmt(low)} – {fmt(high)}</div>
             </div>
           </div>
         </div>
