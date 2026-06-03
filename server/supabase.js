@@ -6,19 +6,20 @@ const supabase = createClient(
 );
 
 /**
+ * Write a lead (from the gate form) to showcase_leads.
+ */
+export async function writeLead({ firstName, lastName, email, phone }) {
+  const { error } = await supabase.from("showcase_leads").insert({
+    first_name: firstName,
+    last_name:  lastName,
+    email,
+    phone:      phone || null,
+  });
+  if (error) console.error("Supabase lead insert error:", error);
+}
+
+/**
  * Write a completed budget session to the budget_sessions table.
- *
- * Required table schema (run once in Supabase SQL editor):
- *
- *   CREATE TABLE IF NOT EXISTS budget_sessions (
- *     id              uuid DEFAULT gen_random_uuid() PRIMARY KEY,
- *     created_at      timestamptz DEFAULT now(),
- *     client_name     text,
- *     client_email    text,
- *     session_data    jsonb,
- *     budget_output   jsonb,
- *     total_estimate  numeric
- *   );
  */
 export async function writeBudgetSession({ sessionData, budget }) {
   const record = {
