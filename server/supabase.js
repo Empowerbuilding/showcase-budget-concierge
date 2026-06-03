@@ -28,14 +28,36 @@ export async function writeLead({ firstName, lastName, email, phone }) {
  * Write lead into Showcase CRM contacts table.
  */
 export async function writeShowcaseCrmLead({ sessionData, budget }) {
+  const sd = sessionData || {};
+  const site = sd.site_conditions || {};
+  const features = sd.special_features || {};
+
+  const siteList = Object.entries(site)
+    .filter(([, v]) => v)
+    .map(([k]) => k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
+    .join(', ') || 'None';
+
+  const featureList = Object.entries(features)
+    .filter(([, v]) => v)
+    .map(([k]) => k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
+    .join(', ') || 'None';
+
+  const tierLabel = t => t ? t.charAt(0).toUpperCase() + t.slice(1) : 'Standard';
+
   const notes = [
-    sessionData.build_location ? `Build Location: ${sessionData.build_location}` : null,
-    sessionData.sqft           ? `Sqft: ${sessionData.sqft}` : null,
-    sessionData.stories        ? `Stories: ${sessionData.stories}` : null,
-    sessionData.exterior_tier  ? `Exterior: ${sessionData.exterior_tier}` : null,
-    sessionData.interior_tier  ? `Interior: ${sessionData.interior_tier}` : null,
-    budget?.low && budget?.high ? `Budget Range: $${budget.low.toLocaleString()} – $${budget.high.toLocaleString()}` : null,
-  ].filter(Boolean).join(" | ");
+    `--- Design Concierge Submission ---`,
+    sd.build_location  ? `Build Location: ${sd.build_location}` : null,
+    sd.sqft            ? `Square Footage: ${Number(sd.sqft).toLocaleString()} sf` : null,
+    sd.stories         ? `Stories: ${sd.stories}` : null,
+    sd.garage_bays     ? `Garage Bays: ${sd.garage_bays}` : null,
+    sd.bonus_room      ? `Bonus Room: Yes` : null,
+    `Site Conditions: ${siteList}`,
+    sd.exterior_tier   ? `Exterior Finish: ${tierLabel(sd.exterior_tier)}` : null,
+    sd.interior_tier   ? `Interior Finish: ${tierLabel(sd.interior_tier)}` : null,
+    `Special Features: ${featureList}`,
+    budget?.low && budget?.high
+      ? `Budget Range: $${budget.low.toLocaleString()} \u2013 $${budget.high.toLocaleString()} (Base: $${budget.total.toLocaleString()})` : null,
+  ].filter(Boolean).join('\n');
 
   const { error } = await showcaseCrm.from("contacts").insert({
     first_name:   sessionData.first_name || null,
