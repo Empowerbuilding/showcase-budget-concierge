@@ -60,7 +60,8 @@ app.post("/api/chat", async (req, res) => {
     // Add assistant response to history
     session.history.push({ role: "assistant", content: aiResponse });
 
-    // Parse JSON block for conversationComplete / sessionData
+    // Parse JSON block for component / conversationComplete / sessionData
+    let component = null;
     let conversationComplete = false;
     let claudeSessionData = null;
 
@@ -71,6 +72,8 @@ app.post("/api/chat", async (req, res) => {
         if (parsed.conversation_complete) {
           conversationComplete = true;
           claudeSessionData = parsed.session_data || {};
+        } else if (parsed.component) {
+          component = parsed.component;
         }
       } catch (e) {
         console.error("JSON parse error in AI response:", e.message);
@@ -82,7 +85,7 @@ app.post("/api/chat", async (req, res) => {
       .replace(/```json\s*\n?[\s\S]*?```/gs, "")
       .trim();
 
-    res.json({ message: cleanText, conversationComplete, sessionData: claudeSessionData });
+    res.json({ message: cleanText, component, conversationComplete, sessionData: claudeSessionData });
   } catch (err) {
     console.error("Chat error:", err);
     res.status(500).json({ error: "Failed to process chat message" });
