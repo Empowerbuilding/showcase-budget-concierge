@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble.jsx";
 import TypingIndicator from "./TypingIndicator.jsx";
 import FieldCard from "./FieldCard.jsx";
+import StyleCard from "./StyleCard.jsx";
 import MeetingsEmbed from "./MeetingsEmbed.jsx";
 import { useChat } from "../hooks/useChat.js";
 
@@ -76,10 +77,15 @@ export default function ChatWindow() {
         <div ref={messagesEnd} />
       </div>
 
-      {/* Inline contact card */}
+      {/* Inline components */}
       {activeComponent && activeComponent.type === "contact" && (
         <div style={s.componentArea}>
           <FieldCard component={activeComponent} onSubmit={handleComponentSubmit} />
+        </div>
+      )}
+      {activeComponent && activeComponent.type === "style_cards" && (
+        <div style={s.componentArea}>
+          <StyleCard onSubmit={handleComponentSubmit} />
         </div>
       )}
 
@@ -89,6 +95,16 @@ export default function ChatWindow() {
           <div style={s.bookingTitle}>Get Hard Numbers. Book Your Site &amp; Design Review.</div>
           <div style={s.bookingText}>Schedule your complimentary 15-minute intro call with our design team.</div>
           <MeetingsEmbed />
+          <div style={{ textAlign: "center", marginTop: 20, paddingBottom: 8 }}>
+            <a
+              href="https://www.showcasebuilders.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#C5A572", fontSize: 13, fontFamily: "'Inter', sans-serif", textDecoration: "none", borderBottom: "1px solid #C5A572", paddingBottom: 1 }}
+            >
+              showcasebuilders.com
+            </a>
+          </div>
         </div>
       )}
 

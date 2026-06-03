@@ -17,7 +17,11 @@ ${FENCE}
 ## Steps 2–5 — 4 Questions (one at a time)
 Once you have their name, ask these 4 questions sequentially. Wait for each answer before moving to the next. Use their first name occasionally.
 
-Q1 (Style): "What architectural style fits your vision? For example: Modern, Modern Farmhouse, Traditional, or Transitional."
+Q1 (Style): Ask what architectural style fits their vision. Output this component:
+
+${FENCE}json
+{"component":{"type":"style_cards"}}
+${FENCE}
 
 Q2 (Size): Acknowledge their style. Ask: "What is your target square footage?"
 
