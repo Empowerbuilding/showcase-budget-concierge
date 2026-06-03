@@ -146,26 +146,14 @@ export function useChat() {
     }
   }, [isLoading, isComplete, handleResponse]);
 
-  // ── Initial greeting ─────────────────────────────────────────────────────
-  const startConversation = useCallback(async () => {
+    // -- Initial greeting -- instant, no API call
+  const INSTANT_COMPONENT = {type:'home_details',step:1,total_steps:9,fields:[{key:'sqft',label:'Square Footage',type:'number',placeholder:'e.g. 2400'},{key:'bedrooms',label:'Bedrooms',type:'select',options:[{value:'2',label:'2 Bed'},{value:'3',label:'3 Bed'},{value:'4',label:'4 Bed'},{value:'5',label:'5 Bed'},{value:'6',label:'6 Bed'},{value:'7',label:'7 Bed'}]},{key:'full_baths',label:'Full Baths',type:'select',options:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'},{value:'5',label:'5'}]},{key:'half_baths',label:'Half Baths',type:'select',options:[{value:'0',label:'None'},{value:'1',label:'1'},{value:'2',label:'2'}]},{key:'stories',label:'Stories',type:'select',options:[{value:'1',label:'Single story'},{value:'1.5',label:'1.5 story'},{value:'2',label:'Two story'},{value:'3',label:'Three story'}]},{key:'garage_bays',label:'Garage Bays',type:'select',options:[{value:'0',label:'No garage'},{value:'1',label:'1 bay'},{value:'2',label:'2 bays'},{value:'3',label:'3 bays'},{value:'4',label:'4+ bays'}]},{key:'bonus_room',label:'Bonus Room?',type:'boolean'}]};
+
+  const startConversation = useCallback(() => {
     if (hasGreeted.current) return;
     hasGreeted.current = true;
-    setIsLoading(true);
-    try {
-      const res  = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: sessionId.current, message: "Hello" }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to start");
-      setMessages([{ role: "assistant", text: data.message }]);
-      if (data.component) setActiveComponent(data.component);
-    } catch {
-      setMessages([{ role: "assistant", text: "Hi! I'm the Showcase Builders Budget Concierge. Let's build your preliminary estimate." }]);
-    } finally {
-      setIsLoading(false);
-    }
+    setMessages([{ role: 'assistant', text: 'Welcome to Showcase Builders! I’m your Design Concierge — let’s build your preliminary budget estimate in about 2 minutes. Start by telling me about your home.' }]);
+    setActiveComponent(INSTANT_COMPONENT);
   }, []);
 
   const dismissComponent = useCallback(() => setActiveComponent(null), []);
