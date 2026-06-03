@@ -17,17 +17,18 @@ export default function ChecklistCard({ component, onSubmit }) {
   return (
     <div style={{
       background: "#FAFAF8", border: "1px solid #C5A572", borderRadius: 12,
-      padding: "16px 18px", marginBottom: 8,
+      padding: "14px 16px", marginBottom: 8,
+      maxHeight: 280, overflowY: "auto",
     }}>
       {title && <div style={{ fontSize: 13, fontWeight: 600, color: "#C5A572", marginBottom: subtitle ? 2 : 10, letterSpacing: "0.04em", fontFamily: "'Inter',sans-serif" }}>{title}</div>}
       {subtitle && <div style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 12, fontFamily: "'Inter',sans-serif" }}>{subtitle}</div>}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
         {items.map(item => (
           <button key={item.key} onClick={() => toggle(item.key)}
             style={{
-              padding: "8px 14px", borderRadius: 8, cursor: "pointer",
-              fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 500,
+              padding: "6px 11px", borderRadius: 8, cursor: "pointer",
+              fontFamily: "'Inter',sans-serif", fontSize: 12, fontWeight: 500,
               transition: "all 0.15s",
               border: `1px solid ${checked[item.key] ? "#C5A572" : "#E5E0D8"}`,
               background: checked[item.key] ? "rgba(197,165,114,0.13)" : "#fff",
