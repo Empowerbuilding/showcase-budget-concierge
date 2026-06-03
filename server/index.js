@@ -5,6 +5,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { chat } from "./claude.js";
 import { writeBudgetSession, writeLead } from "./supabase.js";
+import { calculateBudget } from "./budget.js";
+import { sendBudgetEmail } from "./email.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -96,11 +98,23 @@ app.post("/api/chat", async (req, res) => {
 app.post("/api/complete", async (req, res) => {
   try {
     const { sessionId, sessionData: clientSessionData } = req.body;
-    await writeBudgetSession({ sessionData: clientSessionData || {} });
-    res.json({ success: true });
+    const session = sessions.get(sessionId);
+    const mergedData = { ...(session?.data || {}), ...(clientSessionData || {}) };
+
+    const budget = calculateBudget(mergedData);
+
+    const [dbResult, emailResult] = await Promise.allSettled([
+      writeBudgetSession({ sessionData: mergedData, budget }),
+      sendBudgetEmail({ name: mergedData.first_name || mergedData.name, email: mergedData.email, budget, sessionData: mergedData }),
+    ]);
+
+    if (dbResult.status === "rejected") console.error("DB write failed:", dbResult.reason);
+    if (emailResult.status === "rejected") console.error("Email failed:", emailResult.reason);
+
+    res.json({ success: true, budget });
   } catch (err) {
     console.error("Complete error:", err);
-    res.status(500).json({ error: "Failed to save session" });
+    res.status(500).json({ error: "Failed to generate budget" });
   }
 });
 
