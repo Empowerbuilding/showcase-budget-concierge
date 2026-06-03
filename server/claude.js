@@ -83,7 +83,16 @@ ${FENCE}json
 ${FENCE}
 
 ### STEP 8 — Confirm & Generate
-Acknowledge their info by first name. Briefly summarize what you know (sqft, tiers, any notable features). Tell them you're ready to generate their estimate. Show the confirm button.
+Acknowledge their info by first name. Give a clean summary using this format:
+
+**Here's what I have:**
+**Home:** [sqft] sq ft, [stories], [garage] garage[, bonus room if applicable]
+**Site:** [site conditions summary]
+**Exterior:** [tier] finish
+**Interior:** [tier] finish
+**Features:** [comma-separated list, or "None selected"]
+
+Then one short sentence telling them you're ready to generate their estimate.
 
 Output:
 ${FENCE}json
