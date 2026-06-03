@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
     <title>Showcase Builders Build Concierge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,7 +12,9 @@
     />
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body, #root { height: 100%; width: 100%; }
+      html { height: 100%; }
+      body { height: 100%; overflow: hidden; }
+      #root { height: 100dvh; overflow: hidden; }
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         background: #FAFAF8;
