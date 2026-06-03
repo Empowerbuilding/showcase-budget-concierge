@@ -1,7 +1,7 @@
-// claude.js — powered by Gemini 2.5 Pro
+// claude.js — powered by Anthropic Claude
 
-const GEMINI_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
+import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const FENCE = "```";
 
@@ -106,52 +106,17 @@ ${FENCE}
 - When outputting session_data, use the values from the actual conversation — do not use placeholder values`;
 
 export async function chat(history) {
-  // Convert OpenAI-style history to Gemini format
-  const contents = history.map(m => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }]
+  const messages = history.map(m => ({
+    role: m.role === 'assistant' ? 'assistant' : 'user',
+    content: m.content,
   }));
 
-  const res = await fetch(`${GEMINI_URL}?key=${GEMINI_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents,
-      generationConfig: { maxOutputTokens: 1500 }
-    })
+  const response = await client.messages.create({
+    model: "claude-opus-4-5",
+    max_tokens: 1500,
+    system: SYSTEM_PROMPT,
+    messages,
   });
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Gemini error ${res.status}: ${err}`);
-  }
-
-  const data = await res.json();
-
-  // Gemini 2.5-pro (thinking model) sometimes returns no candidates on first turn
-  // Retry once with gemini-2.5-flash as fallback
-  if (!data.candidates?.length) {
-    console.warn("No candidates from Gemini, retrying with flash...", JSON.stringify(data).slice(0, 200));
-    const retry = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents,
-        generationConfig: { maxOutputTokens: 1500 }
-      })
-    });
-    const retryData = await retry.json();
-    const retryText = retryData.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!retryText) throw new Error("Gemini returned no candidates: " + JSON.stringify(retryData).slice(0, 300));
-    return retryText;
-  }
-
-  const text = data.candidates[0]?.content?.parts?.[0]?.text;
-  if (!text) {
-    console.error("Gemini candidate has no text:", JSON.stringify(data.candidates[0]).slice(0, 300));
-    throw new Error("Gemini returned empty response");
-  }
-  return text;
+  return response.content[0].text;
 }
