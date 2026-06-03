@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import multer from "multer";
 import { chat } from "./claude.js";
 import { writeBudgetSession, writeLead, writeShowcaseCrmLead } from "./supabase.js";
 import { calculateBudget } from "./budget.js";
@@ -13,6 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
 app.use(express.json());
 
 // Serve static React build
@@ -22,6 +28,18 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 const sessions = new Map();
 
 // ── Health check ────────────────────────────────────────────────────────────
+// ── File upload — accept and acknowledge, no AI parsing ───────────────────────────
+app.post("/api/upload", upload.single("plan"), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No file provided" });
+    console.log(`File received: ${req.file.originalname} (${req.file.size} bytes)`);
+    res.json({ success: true, filename: req.file.originalname, extracted: {} });
+  } catch (err) {
+    console.error("Upload error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", sessions: sessions.size });
 });
