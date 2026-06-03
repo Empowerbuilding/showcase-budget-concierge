@@ -76,9 +76,7 @@ export default function BudgetTable({ budget, sessionData }) {
               display: "grid", gridTemplateColumns: "1fr auto", gap: 8, alignItems: "baseline",
             }}>
               <div>
-                <span style={{ fontSize: 11, color: "#9CA3AF", marginRight: 6 }}>{li.id}</span>
                 <span style={{ fontSize: 13, color: "#374151" }}>{li.name}</span>
-                {li.notes && <span style={{ fontSize: 10, color: "#9CA3AF", marginLeft: 8 }}>{li.notes}</span>}
               </div>
               <div style={{ fontSize: 13, color: "#374151", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
                 {fmt(li.amount)}
