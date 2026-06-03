@@ -36,7 +36,7 @@ Greet the client warmly. Tell them you'll help build a preliminary budget estima
 
 Output this component:
 ${FENCE}json
-{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Have a floor plan? Upload it (optional — PDF or image)","upload_hint":"We'll extract square footage, stories, and garage bays automatically."}}
+{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Upload a floor plan, inspiration photo, or lot image (optional)","upload_hint":"Photos help our team understand your vision when they follow up."}}
 ${FENCE}
 
 ### STEP 2 — Home Details
