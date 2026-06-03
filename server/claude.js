@@ -36,7 +36,7 @@ Greet the client warmly. Tell them you'll help build a preliminary budget estima
 
 Output this component:
 ${FENCE}json
-{"component":{"type":"contact","fields":[{"key":"name","label":"Your Name","type":"text","placeholder":"Full name"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"}],"upload_label":"Have a floor plan? Upload it (optional — PDF or image)","upload_hint":"We'll extract square footage, stories, and garage bays automatically."}}
+{"component":{"type":"contact","fields":[{"key":"name","label":"Your Name","type":"text","placeholder":"Full name"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Have a floor plan? Upload it (optional — PDF or image)","upload_hint":"We'll extract square footage, stories, and garage bays automatically."}}
 ${FENCE}
 
 ### STEP 2 — Home Details
@@ -91,7 +91,7 @@ ${FENCE}
 After the user clicks confirm or says they're ready, say "Generating your estimate now..." and output the session data. Fill ALL fields from the conversation history:
 
 ${FENCE}json
-{"conversation_complete":true,"session_data":{"name":"","email":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"home_automation":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false}}}
+{"conversation_complete":true,"session_data":{"name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"home_automation":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false}}}
 ${FENCE}
 
 ---

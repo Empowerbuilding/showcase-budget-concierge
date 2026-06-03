@@ -24,6 +24,7 @@ export async function writeBudgetSession({ sessionData, budget }) {
   const record = {
     client_name:    sessionData?.name    || null,
     client_email:   sessionData?.email   || null,
+    client_phone:   sessionData?.phone   || null,
     session_data:   sessionData          || null,
     budget_output:  budget               || null,
     total_estimate: budget?.total        || null,
