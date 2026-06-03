@@ -107,10 +107,20 @@ export default function ChatWindow() {
   const [input, setInput]     = useState("");
   const [logoErr, setLogoErr] = useState(false);
   const messagesEnd            = useRef(null);
+  const lastMessageRef         = useRef(null);
   const inputRef               = useRef(null);
 
   useEffect(() => { startConversation(); }, [startConversation]);
-  useEffect(() => { messagesEnd.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, isLoading, activeComponent]);
+
+  // When a component appears, scroll to the last message so the question stays visible
+  // When no component, scroll to bottom as normal
+  useEffect(() => {
+    if (activeComponent) {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isLoading, activeComponent]);
   useEffect(() => {
     if (!isComplete && !activeComponent && !isLoading) inputRef.current?.focus();
   }, [messages, isLoading, activeComponent, isComplete]);
@@ -179,7 +189,11 @@ export default function ChatWindow() {
       ) : (
         <>
           <div style={s.messagesArea}>
-            {messages.map((msg, i) => <MessageBubble key={i} message={msg} />)}
+            {messages.map((msg, i) => (
+              <div key={i} ref={i === messages.length - 1 ? lastMessageRef : null}>
+                <MessageBubble message={msg} />
+              </div>
+            ))}
             {isLoading && <TypingIndicator />}
             <div ref={messagesEnd} />
           </div>
