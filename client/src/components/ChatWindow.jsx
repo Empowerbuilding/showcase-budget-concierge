@@ -240,7 +240,13 @@ export default function ChatWindow() {
                 onKeyDown={handleKeyDown}
                 placeholder="Type a message or answer above…"
                 style={s.input}
-                onFocus={e => (e.target.style.borderColor = "#C5A572")}
+                onFocus={e => {
+                  e.target.style.borderColor = "#C5A572";
+                  // On mobile, keyboard pushes viewport up — scroll last message into view
+                  setTimeout(() => {
+                    lastMessageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 350);
+                }}
                 onBlur={e => (e.target.style.borderColor = "#D1D5DB")}
                 disabled={isLoading}
               />
