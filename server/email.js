@@ -19,8 +19,8 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
 
   const rows = lineItems.map((li, i) => `
     <tr style="background:${i % 2 === 0 ? "#ffffff" : "#F9F7F4"}">
-      <td style="padding:10px 20px 10px 24px;color:#374151;font-size:13px;border-bottom:1px solid #EDE9E2;line-height:1.4;">${li.name}</td>
-      <td style="padding:10px 24px 10px 8px;color:#111827;font-size:13px;border-bottom:1px solid #EDE9E2;text-align:right;white-space:nowrap;font-weight:500;">${formatCurrency(li.amount)}</td>
+      <td class="breakdown-td" style="padding:10px 8px 10px 24px;color:#374151;font-size:13px;border-bottom:1px solid #EDE9E2;line-height:1.4;">${li.name}</td>
+      <td class="breakdown-td" style="padding:10px 24px 10px 8px;color:#111827;font-size:13px;border-bottom:1px solid #EDE9E2;text-align:right;white-space:nowrap;font-weight:500;">${formatCurrency(li.amount)}</td>
     </tr>`).join("");
 
   const detailRow = (label, value) => value ? `
@@ -33,12 +33,28 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
 
   return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Build Blueprint</title></head>
-<body style="margin:0;padding:20px 0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;">
-  <div style="max-width:620px;margin:0 auto;">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Your Build Blueprint</title>
+  <style>
+    @media only screen and (max-width:620px) {
+      .email-wrapper { width:100% !important; padding:0 !important; }
+      .email-body    { padding:20px 16px !important; }
+      .email-hero    { padding:24px 16px !important; }
+      .email-section { padding:20px 16px !important; }
+      .hero-num      { font-size:22px !important; }
+      .breakdown-td  { padding:9px 12px !important; }
+      .cta-section   { padding:24px 16px !important; }
+      .footer-section{ padding:16px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:12px 0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <div class="email-wrapper" style="max-width:620px;width:100%;margin:0 auto;">
 
     <!-- Header -->
-    <div style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2417 100%);border-radius:12px 12px 0 0;padding:36px 32px;text-align:center;">
+    <div class="email-hero" style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2417 100%);border-radius:12px 12px 0 0;padding:36px 32px;text-align:center;">
       <img src="https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/object/public/website-images/Showcase/showcase-builders-logo.png"
            alt="Showcase Builders" style="height:64px;width:auto;display:block;margin:0 auto 16px;background:#fff;padding:8px 16px;border-radius:6px;" />
       <div style="color:#C5A572;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;">Build Concierge</div>
@@ -48,7 +64,7 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
     <div style="height:4px;background:linear-gradient(90deg,#B8960A,#C5A572,#B8960A);"></div>
 
     <!-- Intro -->
-    <div style="background:#fff;padding:32px 32px 24px;">
+    <div style="background:#fff;padding:32px 32px 24px;" class="email-body">
       <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#111827;font-family:Georgia,serif;">Hi ${name || "there"},</h1>
       <p style="margin:0 0 20px;color:#6B7280;font-size:14px;line-height:1.7;">
         Here's your personalized build blueprint from Showcase Builders. This is a planning-level estimate based on your selections —
@@ -62,12 +78,12 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
           <tr>
             <td style="text-align:center;padding:0 12px;">
               <div style="color:rgba(255,255,255,0.45);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">Low</div>
-              <div style="color:#ffffff;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(low)}</div>
+              <div class="hero-num" style="color:#ffffff;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(low)}</div>
             </td>
             <td style="text-align:center;padding:0 8px;color:#C5A572;font-size:24px;font-weight:200;vertical-align:middle;">&ndash;</td>
             <td style="text-align:center;padding:0 12px;">
               <div style="color:rgba(255,255,255,0.45);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;">High</div>
-              <div style="color:#C5A572;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(high)}</div>
+              <div class="hero-num" style="color:#C5A572;font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;">${formatCurrency(high)}</div>
             </td>
           </tr>
         </table>
@@ -96,14 +112,14 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
 
     <!-- Cost Breakdown -->
     <div style="background:#FAFAF8;border-top:1px solid #EDE9E2;">
-      <div style="padding:20px 32px 12px;">
+      <div style="padding:20px 32px 12px;" class="email-section">
         <div style="font-size:10px;color:#C5A572;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;">Cost Breakdown</div>
       </div>
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <thead>
           <tr style="background:#F0EDE8;">
-            <th style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:left;font-weight:600;">Category</th>
-            <th style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:right;font-weight:600;">Estimate</th>
+            <th class="breakdown-td" style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:left;font-weight:600;">Category</th>
+            <th class="breakdown-td" style="padding:9px 24px;font-size:10px;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;text-align:right;font-weight:600;">Estimate</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -125,7 +141,7 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
     </div>
 
     <!-- CTA -->
-    <div style="background:#fff;padding:32px;text-align:center;border-top:1px solid #EDE9E2;">
+    <div class="cta-section" style="background:#fff;padding:32px;text-align:center;border-top:1px solid #EDE9E2;">
       <div style="font-family:Georgia,serif;font-size:18px;font-weight:700;color:#111827;margin-bottom:8px;">Ready to Get a Hard Number?</div>
       <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:0 0 20px;">
         This estimate is a starting point. Book a 15-minute call with our team and we'll walk through your site, your plan, and what it actually costs to build.
@@ -137,7 +153,7 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
     </div>
 
     <!-- Disclaimer + Footer -->
-    <div style="background:#1a1a1a;border-radius:0 0 12px 12px;padding:20px 32px;">
+    <div class="footer-section" style="background:#1a1a1a;border-radius:0 0 12px 12px;padding:20px 32px;">
       <p style="color:rgba(255,255,255,0.35);font-size:10px;line-height:1.6;margin:0 0 12px;">
         This estimate is preliminary and for planning purposes only. Actual costs will vary based on final plans, site conditions,
         material selections, and local labor markets. Contact your builder for a detailed bid based on construction documents.
