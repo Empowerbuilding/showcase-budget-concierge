@@ -2,14 +2,14 @@ import React, { useState } from "react";
 
 const TIER_IMAGES = {
   exterior_tier: {
-    standard: "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_9658.webp?width=800&quality=80&resize=cover",
-    elevated:  "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/Copy%20of%20DSC_3691.webp?width=800&quality=80&resize=cover",
-    premium:   "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/Kaatz5.webp?width=800&quality=80&resize=cover",
+    standard: "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_9658.webp?width=800&quality=80&resize=contain",
+    elevated:  "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/Copy%20of%20DSC_3691.webp?width=800&quality=80&resize=contain",
+    premium:   "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/Kaatz5.webp?width=800&quality=80&resize=contain",
   },
   interior_tier: {
-    standard: "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_9546.webp?width=800&quality=80&resize=cover",
-    elevated:  "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_3802.webp?width=800&quality=80&resize=cover",
-    premium:   "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/kaatz2.webp?width=800&quality=80&resize=cover",
+    standard: "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_9546.webp?width=800&quality=80&resize=contain",
+    elevated:  "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/DSC_3802.webp?width=800&quality=80&resize=contain",
+    premium:   "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/render/image/public/website-images/Showcase/kaatz2.webp?width=800&quality=80&resize=contain",
   },
 };
 
@@ -57,7 +57,7 @@ export default function TierCard({ component, onSubmit }) {
                 }}>
                 {img && (
                   <img src={img} alt={tier.label}
-                    style={{ width: "100%", height: 100, objectFit: "cover", display: "block" }}
+                    style={{ width: "100%", height: 110, objectFit: "cover", objectPosition: "center 30%", display: "block" }}
                   />
                 )}
                 <div style={{
