@@ -55,8 +55,10 @@ function buildEmailHTML({ name, budget, sessionData: sd }) {
 
     <!-- Header -->
     <div class="email-hero" style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2417 100%);border-radius:12px 12px 0 0;padding:36px 32px;text-align:center;">
-      <img src="https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/object/public/website-images/Showcase/showcase-builders-logo.png"
-           alt="Showcase Builders" style="height:64px;width:auto;display:block;margin:0 auto 16px;background:#fff;padding:8px 16px;border-radius:6px;" />
+      <div style="display:inline-block;background:#ffffff;padding:8px 20px;border-radius:8px;margin-bottom:16px;">
+        <img src="https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/object/public/website-images/Showcase/showcase-builders-logo.png"
+             alt="Showcase Builders" style="height:56px;width:auto;display:block;" />
+      </div>
       <div style="color:#C5A572;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;">Build Concierge</div>
     </div>
 
