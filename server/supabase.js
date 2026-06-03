@@ -64,8 +64,9 @@ export async function writeShowcaseCrmLead({ sessionData, budget }) {
     last_name:    sessionData.last_name  || null,
     email:        sessionData.email      || null,
     phone:        sessionData.phone      || null,
-    lead_source:  "design_concierge",
-    client_type:  "consumer",
+    lead_source:     "design_concierge",
+    client_type:     "consumer",
+    lifecycle_stage: "lead",
     notes,
   });
 
