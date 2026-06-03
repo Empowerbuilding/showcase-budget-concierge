@@ -104,6 +104,7 @@ app.post("/api/chat", async (req, res) => {
           claudeSessionData = parsed.session_data || {};
         } else if (parsed.component) {
           component = parsed.component;
+          component.total_steps = 10; // always override — Claude sometimes hallucinates wrong count
         }
       } catch (e) {
         console.error("JSON parse error in AI response:", e.message);
