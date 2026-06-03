@@ -47,7 +47,7 @@ const s = {
 };
 
 // Update BOOKING_URL to your actual Calendly / HubSpot / etc. booking link
-const BOOKING_URL = "https://calendly.com/showcase-builders/intro";
+const BOOKING_URL = "https://crm.showcasebuilders.com/book/30-minute-consultation?embed=true";
 
 export default function MeetingsEmbed() {
   return (
