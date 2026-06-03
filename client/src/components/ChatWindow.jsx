@@ -78,9 +78,13 @@ export default function ChatWindow() {
   const [input, setInput]       = useState("");
   const [logoErr, setLogoErr]   = useState(false);
   const messagesEnd              = useRef(null);
+  const inputRef                 = useRef(null);
 
   useEffect(() => { startConversation(); }, [startConversation]);
   useEffect(() => { messagesEnd.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, isLoading, activeComponent]);
+  useEffect(() => {
+    if (!isComplete && !activeComponent && !isLoading) inputRef.current?.focus();
+  }, [messages, isLoading, activeComponent, isComplete]);
 
   const handleSend = () => {
     const text = input.trim();
@@ -155,6 +159,8 @@ export default function ChatWindow() {
           <div style={s.inputArea}>
             <div style={s.inputRow}>
               <input
+                ref={inputRef}
+                autoFocus
                 type="text"
                 value={input}
                 onChange={e => setInput(e.target.value)}
