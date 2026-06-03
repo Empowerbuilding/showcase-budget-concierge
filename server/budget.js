@@ -32,6 +32,19 @@ const TIER_IDX = { standard: 0, elevated: 1, premium: 2 };
 
 function tierIdx(name) { return TIER_IDX[name] ?? 0; }
 
+// Distance-from-Lake-LBJ logistics premium
+const LOCATION_PREMIUMS = {
+  "Horseshoe Bay":   0,
+  "Kingsland":       0,
+  "Granite Shoals":  0,
+  "Marble Falls":    6000,
+  "Burnet":          12000,
+  "Llano":           14000,
+  "Lampasas":        14000,
+  "Fredericksburg":  20000,
+  "Other Hill Country": 8000,
+};
+
 export function calculateBudget(data) {
   const sqft        = Math.max(Number(data.sqft) || 2000, 500);
   const garageBays  = Number(data.garage_bays) || 0;
@@ -85,6 +98,17 @@ export function calculateBudget(data) {
   }
   if (site.rock_hammering) {
     lineItems.push({ id: 109, name: "Rock Excavation / Hammering",   amount: 30000, notes: "Estimated — varies by site geology" });
+  }
+
+  // ── Location logistics premium ────────────────────────────────────────────
+  const locationPremium = LOCATION_PREMIUMS[data.build_location] || 0;
+  if (locationPremium > 0) {
+    lineItems.push({
+      id: 110,
+      name: `Location Logistics (${data.build_location})`,
+      amount: locationPremium,
+      notes: "Subcontractor travel & site access",
+    });
   }
 
   // ── Special features ─────────────────────────────────────────────────────
