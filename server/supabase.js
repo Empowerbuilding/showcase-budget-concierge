@@ -5,11 +5,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-// Showcase CRM
-const showcaseCrm = createClient(
-  "https://dsonqphdvancfchuejuz.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzb25xcGhkdmFuY2ZjaHVlanV6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2ODY2ODU1MSwiZXhwIjoyMDg0MjQ0NTUxfQ.yEF9Dz0-lzzbEidyZgoU9TkrcPj9HWjr_Pyg99hfuc4"
-);
+const SHOWCASE_WEBHOOK = "https://crm.showcasebuilders.com/api/leads/webhook";
+const SHOWCASE_API_KEY = "showcase_webhook_k7x9m2p4q8r1w5";
 
 /**
  * Write a lead (from the gate form) to showcase_leads.
@@ -25,19 +22,18 @@ export async function writeLead({ firstName, lastName, email, phone }) {
 }
 
 /**
- * Write lead into Showcase CRM contacts table.
+ * Write lead into Showcase CRM via webhook.
+ * This triggers the full pipeline: Trestle + Attom enrichment,
+ * lead scoring, Facebook events, activity log.
  */
 export async function writeShowcaseCrmLead({ sessionData, budget }) {
   const sd = sessionData || {};
-  const site = sd.site_conditions || {};
+  const site     = sd.site_conditions || {};
+  const terrain  = sd.site_terrain    || {};
   const features = sd.special_features || {};
+  const priorities = sd.priorities    || {};
 
-  const siteList = Object.entries(site)
-    .filter(([, v]) => v)
-    .map(([k]) => k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
-    .join(', ') || 'None';
-
-  const featureList = Object.entries(features)
+  const fmt = obj => Object.entries(obj)
     .filter(([, v]) => v)
     .map(([k]) => k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
     .join(', ') || 'None';
@@ -46,31 +42,42 @@ export async function writeShowcaseCrmLead({ sessionData, budget }) {
 
   const notes = [
     `--- Design Concierge Submission ---`,
-    sd.build_location  ? `Build Location: ${sd.build_location}` : null,
-    sd.sqft            ? `Square Footage: ${Number(sd.sqft).toLocaleString()} sf` : null,
-    sd.stories         ? `Stories: ${sd.stories}` : null,
-    sd.garage_bays     ? `Garage Bays: ${sd.garage_bays}` : null,
-    sd.bonus_room      ? `Bonus Room: Yes` : null,
-    `Site Conditions: ${siteList}`,
-    sd.exterior_tier   ? `Exterior Finish: ${tierLabel(sd.exterior_tier)}` : null,
-    sd.interior_tier   ? `Interior Finish: ${tierLabel(sd.interior_tier)}` : null,
-    `Special Features: ${featureList}`,
+    sd.build_location ? `Build Location: ${sd.build_location}` : null,
+    sd.sqft           ? `Square Footage: ${Number(sd.sqft).toLocaleString()} sf` : null,
+    sd.bedrooms       ? `Bedrooms: ${sd.bedrooms}` : null,
+    (sd.full_baths || sd.half_baths) ? `Bathrooms: ${sd.full_baths || 0} full / ${sd.half_baths || 0} half` : null,
+    sd.stories        ? `Stories: ${sd.stories}` : null,
+    sd.garage_bays    ? `Garage Bays: ${sd.garage_bays}` : null,
+    sd.bonus_room     ? `Bonus Room: Yes` : null,
+    `Site Terrain: ${fmt(terrain)}`,
+    `Site Conditions: ${fmt(site)}`,
+    sd.exterior_tier  ? `Exterior Finish: ${tierLabel(sd.exterior_tier)}` : null,
+    sd.interior_tier  ? `Interior Finish: ${tierLabel(sd.interior_tier)}` : null,
+    `Special Features: ${fmt(features)}`,
+    `Priorities: ${fmt(priorities)}`,
     budget?.low && budget?.high
-      ? `Budget Range: $${budget.low.toLocaleString()} \u2013 $${budget.high.toLocaleString()} (Base: $${budget.total.toLocaleString()})` : null,
+      ? `Budget Range: $${budget.low.toLocaleString()} – $${budget.high.toLocaleString()} (Base: $${budget.total.toLocaleString()})` : null,
   ].filter(Boolean).join('\n');
 
-  const { error } = await showcaseCrm.from("contacts").insert({
-    first_name:   sessionData.first_name || null,
-    last_name:    sessionData.last_name  || null,
-    email:        sessionData.email      || null,
-    phone:        sessionData.phone      || null,
-    lead_source:     "design_concierge",
-    client_type:     "consumer",
-    lifecycle_stage: "lead",
-    notes,
-  });
-
-  if (error) console.error("Showcase CRM insert error:", error);
+  try {
+    const res = await fetch(SHOWCASE_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': SHOWCASE_API_KEY },
+      body: JSON.stringify({
+        first_name: sd.first_name || '',
+        last_name:  sd.last_name  || '',
+        email:      sd.email      || '',
+        phone:      sd.phone      || null,
+        source:     'design_concierge',
+        metadata:   { notes },
+      }),
+    });
+    const json = await res.json();
+    if (!res.ok) console.error('Showcase CRM webhook error:', json);
+    else console.log('Showcase CRM lead created:', json.contact_id);
+  } catch (e) {
+    console.error('Showcase CRM webhook error:', e);
+  }
 }
 
 /**
