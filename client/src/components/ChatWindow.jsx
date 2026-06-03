@@ -177,10 +177,13 @@ export default function ChatWindow() {
             <div style={{ fontSize: 20, fontWeight: 700, color: "#111827", fontFamily: "'Playfair Display',serif", textAlign: "center", marginBottom: 6 }}>Get Hard Numbers. Book Your Site &amp; Design Review.</div>
             <div style={{ fontSize: 14, color: "#6B7280", fontFamily: "'Inter',sans-serif", textAlign: "center", lineHeight: 1.6, marginBottom: 4 }}>Schedule your complimentary 15-minute intro call with our design team.</div>
             <MeetingsEmbed />
-            <div style={{ textAlign: "center", marginTop: 16, paddingBottom: 8 }}>
+            <div style={{ textAlign: "center", marginTop: 24, paddingBottom: 24 }}>
               <a href="https://www.showcasebuilders.com" target="_blank" rel="noopener noreferrer"
-                style={{ color: "#C5A572", fontSize: 13, fontFamily: "'Inter',sans-serif", textDecoration: "none", borderBottom: "1px solid #C5A572", paddingBottom: 1 }}>
-                showcasebuilders.com
+                style={{ display: "inline-block", padding: "12px 28px", borderRadius: 8, border: "2px solid #C5A572", color: "#C5A572", fontSize: 14, fontFamily: "'Inter',sans-serif", fontWeight: 700, textDecoration: "none", letterSpacing: "0.05em", textTransform: "uppercase", transition: "all 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#C5A572"; e.currentTarget.style.color = "#fff"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#C5A572"; }}
+              >
+                Visit ShowcaseBuilders.com →
               </a>
             </div>
           </div>
