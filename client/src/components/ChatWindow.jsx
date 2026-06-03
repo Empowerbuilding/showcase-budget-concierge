@@ -109,6 +109,7 @@ export default function ChatWindow() {
   const messagesEnd            = useRef(null);
   const lastMessageRef         = useRef(null);
   const inputRef               = useRef(null);
+  const fileRef                = useRef(null);
 
   useEffect(() => { startConversation(); }, [startConversation]);
 
@@ -215,6 +216,21 @@ export default function ChatWindow() {
 
           <div style={s.inputArea}>
             <div style={s.inputRow}>
+              {/* Hidden file input */}
+              <input ref={fileRef} type="file" accept="image/*,application/pdf,.doc,.docx" style={{ display: "none" }}
+                onChange={e => { const f = e.target.files?.[0]; if (f) { uploadPlan(f); e.target.value = ""; } }} />
+              {/* Animated paperclip button */}
+              <button
+                onClick={() => fileRef.current?.click()}
+                title="Attach image, floor plan, or document"
+                style={{ width: 40, height: 40, borderRadius: "50%", border: "1.5px solid #D1D5DB", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s", animation: "pulse-clip 3s ease-in-out infinite" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#C5A572"; e.currentTarget.style.background = "#FDF5E8"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.background = "#fff"; }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                </svg>
+              </button>
               <input
                 ref={inputRef}
                 autoFocus

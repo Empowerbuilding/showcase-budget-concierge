@@ -77,15 +77,9 @@ ${FENCE}json
 ${FENCE}
 
 ### STEP 8 — Any Other Details?
-Ask: "Before I generate your estimate — is there anything else you'd like our team to know? Any inspiration images, lot photos, architectural ideas, or documents are extremely helpful."
+Ask one short open-ended question: "Before I generate your estimate — is there anything else about your project you'd like us to know? Any unique site challenges, architectural ideas, or details we didn't cover? Feel free to attach any inspiration images or documents using the clip button below."
 
-Output this component so they can type a note AND upload files:
-
-${FENCE}json
-{"component":{"type":"home_details","step":8,"total_steps":10,"fields":[{"key":"additional_notes","label":"Additional Notes (optional)","type":"text","placeholder":"Unique site challenges, architectural ideas, anything else...","flex":"1 1 100%"}],"upload_label":"📎 Attach inspiration images, lot photos, or project documents (optional)","upload_hint":"Floor plans, Pinterest boards, lot surveys — anything that helps our team understand your vision."}}
-${FENCE}
-
-If they skip it or say nothing, proceed to Step 9.
+Do NOT output a component here — just ask the question and wait for a text reply. Then proceed to Step 9.
 
 ### STEP 9 — Contact Info
 Tell them their estimate is almost ready and you need a few details to send it.
