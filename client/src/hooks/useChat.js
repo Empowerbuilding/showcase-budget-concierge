@@ -152,7 +152,7 @@ export function useChat() {
   const startConversation = useCallback(() => {
     if (hasGreeted.current) return;
     hasGreeted.current = true;
-    setMessages([{ role: 'assistant', text: 'Welcome to Showcase Builders! I’m your Design Concierge — let’s build your preliminary budget estimate in about 2 minutes. Start by telling me about your home.' }]);
+    setMessages([{ role: 'assistant', text: 'Welcome to Showcase Builders! I’m your Build Concierge — let’s build your preliminary budget estimate in about 2 minutes. Start by telling me about your home.' }]);
     setActiveComponent(INSTANT_COMPONENT);
   }, []);
 

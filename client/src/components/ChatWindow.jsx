@@ -157,7 +157,7 @@ export default function ChatWindow() {
           ? <img src={LOGO_URL} alt="Showcase Builders" style={s.logoImg} onError={() => setLogoErr(true)} />
           : <div style={s.logoText}>SHOWCASE <span style={s.logoAccent}>BUILDERS</span></div>
         }
-        <div style={s.subtitle}>Budget Concierge</div>
+        <div style={s.subtitle}>Build Concierge</div>
       </div>
 
 
