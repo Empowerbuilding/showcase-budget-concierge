@@ -76,7 +76,7 @@ Ask if any special features apply.
 
 Output:
 ${FENCE}json
-{"component":{"type":"checklist","key":"special_features","title":"Special Features","subtitle":"Select any that apply","items":[{"key":"fireplace","label":"Fireplace (indoor)"},{"key":"outdoor_kitchen","label":"Outdoor Kitchen"},{"key":"home_automation","label":"Home Automation / Smart Home"},{"key":"solar","label":"Solar System"},{"key":"screen_porch","label":"Screened Porch"},{"key":"bonus_room_over_garage","label":"Bonus Room over Garage"}]}}
+{"component":{"type":"checklist","key":"special_features","title":"Special Features","subtitle":"Select any that apply","items":[{"key":"fireplace","label":"Fireplace (indoor)"},{"key":"outdoor_kitchen","label":"Outdoor Kitchen"},{"key":"pool_spa","label":"Pool / Spa"},{"key":"dock","label":"Boat Dock"},{"key":"covered_outdoor_living","label":"Covered Outdoor Living"},{"key":"home_automation","label":"Home Automation / Smart Home"},{"key":"media_room","label":"Media Room / Home Theater"},{"key":"wine_cellar","label":"Wine Cellar / Wet Bar"},{"key":"generator","label":"Whole-Home Generator"},{"key":"solar","label":"Solar System"},{"key":"screen_porch","label":"Screened Porch"},{"key":"bonus_room_over_garage","label":"Bonus Room over Garage"},{"key":"safe_room","label":"Storm Shelter / Safe Room"}]}}
 ${FENCE}
 
 ### STEP 7 — Confirm & Generate
@@ -91,7 +91,7 @@ ${FENCE}
 After the user clicks confirm or says they're ready, say "Generating your estimate now..." and output the session data. Fill ALL fields from the conversation history:
 
 ${FENCE}json
-{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"septic":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"home_automation":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false}}}
+{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"septic":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"pool_spa":false,"dock":false,"covered_outdoor_living":false,"home_automation":false,"media_room":false,"wine_cellar":false,"generator":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false,"safe_room":false}}}
 ${FENCE}
 
 ---
