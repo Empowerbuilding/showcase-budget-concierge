@@ -17,7 +17,7 @@ const s = {
   logoText:      { fontSize: 20, fontWeight: 700, color: "#111827", letterSpacing: "0.04em", fontFamily: "'Playfair Display',serif" },
   logoAccent:    { color: "#C5A572" },
   subtitle:      { fontSize: 11, color: "#6B7280", letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'Inter',sans-serif", fontWeight: 500 },
-  progressWrap:  { padding: "8px 20px", background: "#FAFAF8", borderBottom: "1px solid #E5E0D8", flexShrink: 0 },
+  progressWrap:  { padding: "4px 0 8px", flexShrink: 0 },
   progressTrack: { height: 3, background: "#E5E0D8", borderRadius: 99, overflow: "hidden" },
   progressFill:  { height: "100%", background: "#C5A572", borderRadius: 99, transition: "width 0.4s ease" },
   progressLabel: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 4 },
@@ -150,8 +150,7 @@ export default function ChatWindow() {
         <div style={s.subtitle}>Budget Concierge</div>
       </div>
 
-      {/* Progress bar */}
-      {!isComplete && <ProgressBar step={step} totalSteps={totalSteps} />}
+
 
       {/* Complete view */}
       {isComplete ? (
@@ -187,6 +186,7 @@ export default function ChatWindow() {
 
           {activeComponent && (
             <div style={s.componentArea}>
+              <ProgressBar step={step} totalSteps={totalSteps} />
               <ActiveComponent
                 component={activeComponent}
                 onSubmit={handleComponentSubmit}
