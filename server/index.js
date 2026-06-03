@@ -41,7 +41,7 @@ app.post("/api/lead", async (req, res) => {
 // ── Chat endpoint ───────────────────────────────────────────────────────────
 app.post("/api/chat", async (req, res) => {
   try {
-    const { sessionId, message } = req.body;
+    const { sessionId, message, componentData } = req.body;
 
     if (!sessionId || !message) {
       return res.status(400).json({ error: "sessionId and message required" });
@@ -49,9 +49,19 @@ app.post("/api/chat", async (req, res) => {
 
     // Get or create session
     if (!sessions.has(sessionId)) {
-      sessions.set(sessionId, { history: [] });
+      sessions.set(sessionId, { history: [], data: {} });
     }
     const session = sessions.get(sessionId);
+
+    // Merge structured component data into session store
+    if (componentData?.key && componentData?.values) {
+      const { key, values } = componentData;
+      if (key === "contact" || key === "home_details") {
+        Object.assign(session.data, values);
+      } else {
+        session.data[key] = values;
+      }
+    }
 
     // Add user message to history
     session.history.push({ role: "user", content: message });
