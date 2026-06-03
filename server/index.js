@@ -4,7 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { chat } from "./claude.js";
-import { writeBudgetSession, writeLead } from "./supabase.js";
+import { writeBudgetSession, writeLead, writeShowcaseCrmLead } from "./supabase.js";
 import { calculateBudget } from "./budget.js";
 import { sendBudgetEmail } from "./email.js";
 
@@ -103,10 +103,13 @@ app.post("/api/complete", async (req, res) => {
 
     const budget = calculateBudget(mergedData);
 
-    const [dbResult, emailResult] = await Promise.allSettled([
+    const [dbResult, emailResult, crmResult] = await Promise.allSettled([
       writeBudgetSession({ sessionData: mergedData, budget }),
       sendBudgetEmail({ name: mergedData.first_name || mergedData.name, email: mergedData.email, budget, sessionData: mergedData }),
+      writeShowcaseCrmLead({ sessionData: mergedData, budget }),
     ]);
+
+    if (crmResult.status === "rejected") console.error("CRM write failed:", crmResult.reason);
 
     if (dbResult.status === "rejected") console.error("DB write failed:", dbResult.reason);
     if (emailResult.status === "rejected") console.error("Email failed:", emailResult.reason);
