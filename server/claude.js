@@ -79,7 +79,7 @@ Tell them their estimate is almost ready and you just need a few details to send
 
 Output:
 ${FENCE}json
-{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Upload a floor plan, inspiration photo, or lot image (optional)","upload_hint":"Photos help our team understand your vision when they follow up."}}
+{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"},{"key":"build_location","label":"Build Location / Area","type":"text","placeholder":"e.g. Horseshoe Bay, Kingsland, Marble Falls...","flex":"1 1 100%"}],"upload_label":"Upload a floor plan, inspiration photo, or lot image (optional)","upload_hint":"Photos help our team understand your vision when they follow up."}}
 ${FENCE}
 
 ### STEP 8 — Confirm & Generate
@@ -103,7 +103,7 @@ ${FENCE}
 After the user clicks confirm or says they're ready, say "Generating your estimate now..." and output the session data. Fill ALL fields from the conversation history:
 
 ${FENCE}json
-{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"septic":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"pool_spa":false,"dock":false,"covered_outdoor_living":false,"home_automation":false,"media_room":false,"wine_cellar":false,"generator":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false,}}}
+{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","build_location":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"septic":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"pool_spa":false,"dock":false,"covered_outdoor_living":false,"home_automation":false,"media_room":false,"wine_cellar":false,"generator":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false,}}}
 ${FENCE}
 
 ---
