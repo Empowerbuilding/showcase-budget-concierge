@@ -52,7 +52,7 @@ Briefly ask about site utilities. One sentence intro.
 
 Output:
 ${FENCE}json
-{"component":{"type":"checklist","key":"site_conditions","title":"Site Utilities & Conditions","subtitle":"Check everything available at or planned for your property","items":[{"key":"city_water","label":"City Water"},{"key":"city_sewer","label":"City Sewer"},{"key":"electric_at_property","label":"Electric at Property"},{"key":"lp_propane","label":"LP / Propane"},{"key":"well","label":"Well (on-site)"},{"key":"rock_hammering","label":"Rock Hammering Required"}]}}
+{"component":{"type":"checklist","key":"site_conditions","title":"Site Utilities & Conditions","subtitle":"Check everything available at or planned for your property","items":[{"key":"city_water","label":"City Water"},{"key":"city_sewer","label":"City Sewer"},{"key":"electric_at_property","label":"Electric at Property"},{"key":"lp_propane","label":"LP / Propane"},{"key":"well","label":"Well (on-site)"},{"key":"septic","label":"Septic System"},{"key":"rock_hammering","label":"Rock Hammering Required"}]}}
 ${FENCE}
 
 ### STEP 4 — Exterior Finish Level
@@ -91,7 +91,7 @@ ${FENCE}
 After the user clicks confirm or says they're ready, say "Generating your estimate now..." and output the session data. Fill ALL fields from the conversation history:
 
 ${FENCE}json
-{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"home_automation":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false}}}
+{"conversation_complete":true,"session_data":{"first_name":"","last_name":"","email":"","phone":"","sqft":0,"stories":"1","garage_bays":0,"bonus_room":false,"site_conditions":{"city_water":false,"city_sewer":false,"electric_at_property":false,"lp_propane":false,"well":false,"septic":false,"rock_hammering":false},"exterior_tier":"standard","interior_tier":"standard","special_features":{"fireplace":false,"outdoor_kitchen":false,"home_automation":false,"solar":false,"screen_porch":false,"bonus_room_over_garage":false}}}
 ${FENCE}
 
 ---
