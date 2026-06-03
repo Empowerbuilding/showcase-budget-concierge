@@ -1,34 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble.jsx";
 import TypingIndicator from "./TypingIndicator.jsx";
+import FieldCard from "./FieldCard.jsx";
 import MeetingsEmbed from "./MeetingsEmbed.jsx";
 import { useChat } from "../hooks/useChat.js";
 
-const LOGO_URL =
-  "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/object/public/website-images/Showcase/showcase-builders-logo.png";
+const LOGO_URL = "https://ozhkjwcjsifdhfdexayd.supabase.co/storage/v1/object/public/website-images/Showcase/showcase-builders-logo.png";
 
 const s = {
-  container:    { display: "flex", flexDirection: "column", height: "100%", maxWidth: 700, margin: "0 auto" },
-  header:       { padding: "16px 24px", borderBottom: "1px solid #E5E0D8", textAlign: "center", flexShrink: 0, background: "#FAFAF8" },
-  logoImg:      { height: 48, width: "auto", display: "block", margin: "0 auto 6px" },
-  logoText:     { fontSize: 20, fontWeight: 700, color: "#111827", letterSpacing: "0.04em", fontFamily: "'Playfair Display',serif" },
-  logoAccent:   { color: "#C5A572" },
-  subtitle:     { fontSize: 11, color: "#6B7280", letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'Inter',sans-serif", fontWeight: 500 },
-  messagesArea: { flex: 1, overflowY: "auto", padding: "20px 0", display: "flex", flexDirection: "column", gap: 12 },
-  inputArea:    { padding: "16px 20px", borderTop: "1px solid #E5E0D8", flexShrink: 0, background: "#FAFAF8" },
-  inputRow:     { display: "flex", gap: 8, alignItems: "center" },
-  input:        { flex: 1, padding: "14px 18px", borderRadius: 24, border: "1px solid #D1D5DB", background: "#F5F3EF", color: "#111827", fontSize: 15, outline: "none", fontFamily: "'Inter',sans-serif", transition: "border-color 0.2s" },
-  sendBtn:      { width: 46, height: 46, borderRadius: "50%", border: "none", background: "#C5A572", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.2s" },
+  container:     { display: "flex", flexDirection: "column", height: "100%", maxWidth: 700, margin: "0 auto" },
+  header:        { padding: "16px 24px", borderBottom: "1px solid #E5E0D8", textAlign: "center", flexShrink: 0, background: "#FAFAF8" },
+  logoImg:       { height: 48, width: "auto", display: "block", margin: "0 auto 6px" },
+  logoText:      { fontSize: 20, fontWeight: 700, color: "#111827", letterSpacing: "0.04em", fontFamily: "'Playfair Display',serif" },
+  logoAccent:    { color: "#C5A572" },
+  subtitle:      { fontSize: 11, color: "#6B7280", letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'Inter',sans-serif", fontWeight: 500 },
+  messagesArea:  { flex: 1, overflowY: "auto", padding: "20px 0", display: "flex", flexDirection: "column", gap: 12 },
+  componentArea: { padding: "0 20px 4px", flexShrink: 0 },
+  inputArea:     { padding: "16px 20px", borderTop: "1px solid #E5E0D8", flexShrink: 0, background: "#FAFAF8" },
+  inputRow:      { display: "flex", gap: 8, alignItems: "center" },
+  input:         { flex: 1, padding: "14px 18px", borderRadius: 24, border: "1px solid #D1D5DB", background: "#F5F3EF", color: "#111827", fontSize: 15, outline: "none", fontFamily: "'Inter',sans-serif", transition: "border-color 0.2s" },
+  sendBtn:       { width: 46, height: 46, borderRadius: "50%", border: "none", background: "#C5A572", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.2s" },
   sendBtnDisabled: { opacity: 0.4, cursor: "not-allowed" },
-  hint:         { fontSize: 11, color: "#9CA3AF", textAlign: "center", marginTop: 8, fontFamily: "'Inter',sans-serif" },
-
-  bookingWrap:  { padding: "0 20px 28px" },
-  bookingTitle: { fontSize: 20, fontWeight: 700, color: "#111827", fontFamily: "'Playfair Display',serif", textAlign: "center", marginBottom: 6, marginTop: 24 },
-  bookingText:  { fontSize: 14, color: "#6B7280", fontFamily: "'Inter',sans-serif", textAlign: "center", lineHeight: 1.6, marginBottom: 4 },
+  hint:          { fontSize: 11, color: "#9CA3AF", textAlign: "center", marginTop: 8, fontFamily: "'Inter',sans-serif" },
+  bookingWrap:   { padding: "0 20px 28px" },
+  bookingTitle:  { fontSize: 20, fontWeight: 700, color: "#111827", fontFamily: "'Playfair Display',serif", textAlign: "center", marginBottom: 6, marginTop: 24 },
+  bookingText:   { fontSize: 14, color: "#6B7280", fontFamily: "'Inter',sans-serif", textAlign: "center", lineHeight: 1.6, marginBottom: 4 },
 };
 
-export default function ChatWindow({ leadData }) {
-  const { messages, isLoading, isComplete, sendMessage, startConversation } = useChat(leadData);
+export default function ChatWindow() {
+  const {
+    messages, isLoading, isComplete, activeComponent,
+    sendMessage, startConversation, dismissComponent,
+  } = useChat();
 
   const [input, setInput]     = useState("");
   const [logoErr, setLogoErr] = useState(false);
@@ -37,7 +40,7 @@ export default function ChatWindow({ leadData }) {
   useEffect(() => { startConversation(); }, [startConversation]);
   useEffect(() => {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading, isComplete]);
+  }, [messages, isLoading, activeComponent, isComplete]);
 
   const handleSend = () => {
     const text = input.trim();
@@ -48,6 +51,11 @@ export default function ChatWindow({ leadData }) {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  };
+
+  const handleComponentSubmit = (humanText, componentData) => {
+    dismissComponent();
+    sendMessage(humanText, componentData);
   };
 
   return (
@@ -68,19 +76,24 @@ export default function ChatWindow({ leadData }) {
         <div ref={messagesEnd} />
       </div>
 
-      {/* Booking section — shown when conversation is complete */}
+      {/* Inline contact card */}
+      {activeComponent && activeComponent.type === "contact" && (
+        <div style={s.componentArea}>
+          <FieldCard component={activeComponent} onSubmit={handleComponentSubmit} />
+        </div>
+      )}
+
+      {/* Booking — shown when complete */}
       {isComplete && (
         <div style={s.bookingWrap}>
           <div style={s.bookingTitle}>Get Hard Numbers. Book Your Site &amp; Design Review.</div>
-          <div style={s.bookingText}>
-            Schedule your complimentary 15-minute intro call with our design team.
-          </div>
+          <div style={s.bookingText}>Schedule your complimentary 15-minute intro call with our design team.</div>
           <MeetingsEmbed />
         </div>
       )}
 
-      {/* Text input — hidden when complete */}
-      {!isComplete && (
+      {/* Text input — hidden when complete or contact card is showing */}
+      {!isComplete && !activeComponent && (
         <div style={s.inputArea}>
           <div style={s.inputRow}>
             <input
@@ -107,7 +120,7 @@ export default function ChatWindow({ leadData }) {
               </svg>
             </button>
           </div>
-          <div style={s.hint}>Press Enter or click send to reply</div>
+          <div style={s.hint}>Answer in the card above or type your response here</div>
         </div>
       )}
     </div>
