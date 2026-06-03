@@ -39,7 +39,7 @@ Ask about home basics.
 
 Output this component (use pre-filled defaults if provided in context):
 ${FENCE}json
-{"component":{"type":"home_details","fields":[{"key":"sqft","label":"Square Footage","type":"number","placeholder":"e.g. 2400"},{"key":"stories","label":"Stories","type":"select","options":[{"value":"1","label":"Single story"},{"value":"1.5","label":"1.5 story"},{"value":"2","label":"Two story"}]},{"key":"garage_bays","label":"Garage Bays","type":"select","options":[{"value":"0","label":"No garage"},{"value":"1","label":"1 bay"},{"value":"2","label":"2 bays"},{"value":"3","label":"3 bays"},{"value":"4","label":"4+ bays"}]},{"key":"bonus_room","label":"Bonus Room?","type":"boolean"}]}}
+{"component":{"type":"home_details","fields":[{"key":"sqft","label":"Square Footage","type":"number","placeholder":"e.g. 2400"},{"key":"stories","label":"Stories","type":"select","options":[{"value":"1","label":"Single story"},{"value":"1.5","label":"1.5 story"},{"value":"2","label":"Two story"},{"value":"3","label":"Three story"}]},{"key":"garage_bays","label":"Garage Bays","type":"select","options":[{"value":"0","label":"No garage"},{"value":"1","label":"1 bay"},{"value":"2","label":"2 bays"},{"value":"3","label":"3 bays"},{"value":"4","label":"4+ bays"}]},{"key":"bonus_room","label":"Bonus Room?","type":"boolean"}]}}
 ${FENCE}
 
 ### STEP 3 — Site Conditions
