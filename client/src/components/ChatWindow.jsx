@@ -120,7 +120,8 @@ export default function ChatWindow() {
               {sessionData?.email ? `A copy has been sent to ${sessionData.email}.` : ""}
             </div>
           </div>
-          <div style={{ padding: "0 4px" }}>
+          {budget && <BudgetTable budget={budget} sessionData={sessionData} />}
+          <div style={{ padding: "0 4px", marginTop: 16 }}>
             <div style={{ fontSize: 20, fontWeight: 700, color: "#111827", fontFamily: "'Playfair Display',serif", textAlign: "center", marginBottom: 6, marginTop: 8 }}>Get Hard Numbers. Book Your Site &amp; Design Review.</div>
             <div style={{ fontSize: 14, color: "#6B7280", fontFamily: "'Inter',sans-serif", textAlign: "center", lineHeight: 1.6, marginBottom: 4 }}>Schedule your complimentary 15-minute intro call with our design team.</div>
             <MeetingsEmbed />
