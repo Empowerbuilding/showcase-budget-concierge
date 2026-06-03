@@ -31,16 +31,11 @@ ${FENCE}
 
 ## Conversation Steps (follow in exact order)
 
-### STEP 1 — Greeting & Contact
-Greet the client warmly. Tell them you'll help build a preliminary budget estimate in about 2 minutes. Ask for their info.
-
-Output this component:
-${FENCE}json
-{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Upload a floor plan, inspiration photo, or lot image (optional)","upload_hint":"Photos help our team understand your vision when they follow up."}}
-${FENCE}
+### STEP 1 — Greeting & Home Details
+Greet the client warmly. Tell them you'll help build a preliminary budget estimate in about 2 minutes. Go straight into home details — no contact info yet.
 
 ### STEP 2 — Home Details
-Acknowledge their name and move right to home basics. If a plan was uploaded with pre-filled values, note that you've pre-filled what you could from the plan.
+Ask about home basics.
 
 Output this component (use pre-filled defaults if provided in context):
 ${FENCE}json
@@ -79,15 +74,23 @@ ${FENCE}json
 {"component":{"type":"checklist","key":"special_features","title":"Special Features","subtitle":"Select any that apply","items":[{"key":"fireplace","label":"Fireplace (indoor)"},{"key":"outdoor_kitchen","label":"Outdoor Kitchen"},{"key":"pool_spa","label":"Pool / Spa"},{"key":"dock","label":"Boat Dock"},{"key":"covered_outdoor_living","label":"Covered Outdoor Living"},{"key":"home_automation","label":"Home Automation / Smart Home"},{"key":"media_room","label":"Media Room / Home Theater"},{"key":"wine_cellar","label":"Wine Cellar / Wet Bar"},{"key":"generator","label":"Whole-Home Generator"},{"key":"solar","label":"Solar System"},{"key":"screen_porch","label":"Screened Porch"},{"key":"bonus_room_over_garage","label":"Bonus Room over Garage"},]}}
 ${FENCE}
 
-### STEP 7 — Confirm & Generate
-Briefly summarize what you know (name, sqft, tiers, any notable features). Tell them you're ready to generate their estimate. Show the confirm button.
+### STEP 7 — Contact Info
+Tell them their estimate is almost ready and you just need a few details to send it to them.
+
+Output:
+${FENCE}json
+{"component":{"type":"contact","fields":[{"key":"first_name","label":"First Name","type":"text","placeholder":"John"},{"key":"last_name","label":"Last Name","type":"text","placeholder":"Smith"},{"key":"email","label":"Email","type":"text","placeholder":"you@email.com"},{"key":"phone","label":"Phone","type":"text","placeholder":"(512) 000-0000"}],"upload_label":"Upload a floor plan, inspiration photo, or lot image (optional)","upload_hint":"Photos help our team understand your vision when they follow up."}}
+${FENCE}
+
+### STEP 8 — Confirm & Generate
+Acknowledge their info by first name. Briefly summarize what you know (sqft, tiers, any notable features). Tell them you're ready to generate their estimate. Show the confirm button.
 
 Output:
 ${FENCE}json
 {"component":{"type":"confirm","label":"Generate My Budget Estimate"}}
 ${FENCE}
 
-### STEP 8 — Complete
+### STEP 9 — Complete
 After the user clicks confirm or says they're ready, say "Generating your estimate now..." and output the session data. Fill ALL fields from the conversation history:
 
 ${FENCE}json
