@@ -55,7 +55,7 @@ One sentence: ask which exterior finish tier fits their vision.
 
 Output:
 ${FENCE}json
-{"component":{"type":"tier_cards","key":"exterior_tier","title":"Exterior Finish Level","tiers":[{"id":"standard","label":"Standard","badge":"$","description":"Hardie board or LP Smart siding, architectural shingles, vinyl windows, standard exterior paint"},{"id":"elevated","label":"Elevated","badge":"$$","description":"Board & batten or metal accents, metal or architectural shingles, fiberglass windows, exterior lighting package"},{"id":"premium","label":"Premium","badge":"$$$","description":"Full masonry or stucco, standing seam metal roof, wood-clad or aluminum-clad windows, custom exterior details"}]}}
+{"component":{"type":"tier_cards","key":"exterior_tier","title":"Exterior Finish Level","tiers":[{"id":"standard","label":"Standard","badge":"$","description":"Board & batten with limestone accents, architectural shingles, vinyl windows, covered porch with timber framing"},{"id":"elevated","label":"Elevated","badge":"$$","description":"Cut limestone veneer with board & batten gables, standing seam metal roof, black aluminum-clad windows, stained carriage garage doors"},{"id":"premium","label":"Premium","badge":"$$$","description":"Full stucco or masonry, clay tile or metal roof, arched entry, decorative iron details, stamped concrete drive"}]}}
 ${FENCE}
 
 ### STEP 5 — Interior Finish Level
@@ -63,7 +63,7 @@ One sentence: ask about interior finish level.
 
 Output:
 ${FENCE}json
-{"component":{"type":"tier_cards","key":"interior_tier","title":"Interior Finish Level","tiers":[{"id":"standard","label":"Standard","badge":"$","description":"LVP flooring, stock cabinets, laminate countertops, builder-grade fixtures and hardware"},{"id":"elevated","label":"Elevated","badge":"$$","description":"Hardwood or tile mix, semi-custom cabinets, quartz countertops, upgraded fixtures and hardware"},{"id":"premium","label":"Premium","badge":"$$$","description":"Wide-plank hardwood, custom cabinetry, natural stone countertops, designer fixtures and hardware throughout"}]}}
+{"component":{"type":"tier_cards","key":"interior_tier","title":"Interior Finish Level","tiers":[{"id":"standard","label":"Standard","badge":"$","description":"Stained concrete or LVP flooring, Shaker-style wood cabinets, quartz countertops, brushed gold fixtures, designer tile backsplash"},{"id":"elevated","label":"Elevated","badge":"$$","description":"Custom knotty alder cabinetry with glass fronts, honed stone countertops, exposed wood beam ceilings, brass fixtures and antique hardware"},{"id":"premium","label":"Premium","badge":"$$$","description":"Bookmatched marble, glazed custom cabinetry, soaking tub, linear fireplace, designer sconces, patterned tile floors, TV and backlit mirrors"}]}}
 ${FENCE}
 
 ### STEP 6 — Special Features
