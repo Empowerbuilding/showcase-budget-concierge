@@ -6,11 +6,18 @@ export default function FieldCard({ component, onSubmit, onUpload }) {
   const [values, setValues] = useState(() =>
     Object.fromEntries(fields.map(f => [f.key, f.default ?? ""]))
   );
+  const [errors, setErrors] = useState([]);
   const fileRef = useRef(null);
 
   const handleChange = (key, value) => setValues(v => ({ ...v, [key]: value }));
 
   const handleSubmit = () => {
+    const missingRequired = fields.filter(f => f.required && (!values[f.key] || values[f.key].toString().trim() === ""));
+    if (missingRequired.length) {
+      setErrors(missingRequired.map(f => f.key));
+      return;
+    }
+    setErrors([]);
     const filled = fields.filter(f => values[f.key]?.toString().trim() !== "" && values[f.key] !== undefined);
     if (!filled.length) return;
     const parts = filled.map(f => {
@@ -43,7 +50,10 @@ export default function FieldCard({ component, onSubmit, onUpload }) {
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 12 }}>
         {fields.map(f => (
           <div key={f.key} style={{ display: "flex", flexDirection: "column", gap: 4, flex: f.flex || "1 1 160px", minWidth: 110 }}>
-            <label style={labelStyle}>{f.label}</label>
+            <label style={labelStyle}>
+              {f.label}{f.required && <span style={{ color: "#ef4444", marginLeft: 2 }}>*</span>}
+            </label>
+            {errors.includes(f.key) && <span style={{ fontSize: 10, color: "#ef4444" }}>Required</span>}
 
             {f.type === "select" ? (
               <select value={values[f.key]} onChange={e => handleChange(f.key, e.target.value)} style={inputStyle}>

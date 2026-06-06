@@ -48,6 +48,9 @@ app.get("/health", (_req, res) => {
 app.post("/api/lead", async (req, res) => {
   try {
     const { firstName, lastName, email, phone } = req.body;
+    if (!phone || phone.trim() === "") {
+      return res.status(400).json({ success: false, error: "Phone number is required" });
+    }
     await writeLead({ firstName, lastName, email, phone });
     res.json({ success: true });
   } catch (err) {
