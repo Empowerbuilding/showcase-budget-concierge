@@ -181,6 +181,11 @@ export async function sendBudgetEmail({ name, email, budget, sessionData }) {
   }
 
   const sqft = sessionData?.sqft || budget?.meta?.sqft || 0;
+  // Location-aware subject: "on Lake LBJ", "in the Hill Country", etc.
+  const rawLoc = (sessionData?.build_location || "").replace(/^Other\s+/i, "").trim();
+  const locPhrase = rawLoc
+    ? (rawLoc.toLowerCase().startsWith("lake") ? `on ${rawLoc}` : `in the ${rawLoc}`)
+    : "on Lake LBJ";
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -189,9 +194,9 @@ export async function sendBudgetEmail({ name, email, budget, sessionData }) {
     },
     body: JSON.stringify({
       from: "Showcase Builders <sales@showcasebuilders.com>",
-      reply_to: "mitchell@empowerbuilding.ai",
+      reply_to: ["ryan@showcasebuilders.com", "michael@showcasebuilders.com"],
       to: email,
-      subject: `Your Build Blueprint — ${sqft ? sqft.toLocaleString() + " sf " : ""}Custom Home on Lake LBJ`,
+      subject: `Your Build Blueprint — ${sqft ? sqft.toLocaleString() + " sf " : ""}Custom Home ${locPhrase}`,
       html: buildEmailHTML({ name, budget, sessionData }),
     }),
   });
